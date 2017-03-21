@@ -5,6 +5,7 @@
   "main": "index.js",
   "author": "Adam Neumann <aneumann@pivotal.io>",
   "license": "MIT",
+  "repository": "https://github.com/the-deploy-button/the-deploy-button.git",
   "dependencies": {
     "css-loader": "^0.27.3",
     "elm-test": "^0.18.2",

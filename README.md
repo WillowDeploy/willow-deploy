@@ -1,6 +1,6 @@
 # A better Github Releases UI
 
-A user-focussed workflow driven UI for Github.
+A user-focused workflow driven UI for GitHub.
 
 # Setup
 
@@ -12,7 +12,7 @@ To get started developing, after cloning this repo run:
 
 1) Install some global dependencies
    ```bash
-   brew install yarn
+   brew install -g yarn
    ```
 
 1) Install project's Node dependencies from NPM

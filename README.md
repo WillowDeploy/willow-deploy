@@ -1,6 +1,6 @@
-# A better Github Releases UI
+# The Deploy Button
 
-A user-focused workflow driven UI for GitHub.
+A user-focused workflow driven UI for GitHub Releases. 
 
 # Setup
 

@@ -1,5 +1,5 @@
 {
-  "name": "better_github_releases_ui",
+  "name": "the-deploy-button",
   "version": "0.1",
   "description": "User workflow focused UI for GitHub Releases",
   "main": "index.js",

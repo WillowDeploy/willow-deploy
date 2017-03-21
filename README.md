@@ -32,3 +32,7 @@ To get started developing, after cloning this repo run:
    yarn dev
    ```
 1) Navigate to [http://localhost:3000/](http://localhost:3000/)
+
+# Testing
+
+Unit tests are written using [elm-test](http://package.elm-lang.org/packages/elm-community/elm-test) and [elm-html-test](http://package.elm-lang.org/packages/eeue56/elm-html-test). Run all tests using the CLI test runner by invoking `yarn test`.

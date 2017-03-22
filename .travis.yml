@@ -2,6 +2,6 @@ language: node_js
 node_js:
   - "7"
 install:
-  - yarn install -g elm
-  - yarn install -y
+  - npm install -g elm
+  - npm install -y
   - elm-package install -y

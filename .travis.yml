@@ -1,4 +1,7 @@
-language: haskell
+language: node_js
+node_js:
+  - "node"
+  - "7"
 install:
   - yarn install -g elm
   - yarn install -y

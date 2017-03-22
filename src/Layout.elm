@@ -15,10 +15,12 @@ type alias User =
 
 type alias Repository = String
 
+type alias Repositories = List Repository
+
 type alias Model =
     { authenticatedUser: Maybe User
     , oauthToken: String
-    , repositories: Maybe (List Repository)
+    , repositories: Maybe Repositories
     }
 
 
@@ -29,7 +31,7 @@ type Msg
     = AttemptLogin
     | UpdateOAuthToken String
     | UpdateAuthenticatedUser (Result Http.Error String)
-    | UpdateRepositories (Result Http.Error (List Repository))
+    | UpdateRepositories (Result Http.Error Repositories)
     | Logout
 
 
@@ -66,7 +68,7 @@ viewNavigation authenticatedUser =
                 , a [ href "#", onClick Logout ] [ text "logout" ]
                 ]
 
-viewRepositories : Maybe (List Repository) -> Html Msg
+viewRepositories : Maybe Repositories -> Html Msg
 viewRepositories repositories =
     case repositories of
         Nothing ->
@@ -104,18 +106,8 @@ update msg model =
 
 fetchAuthenticatedUser : Model -> Cmd Msg
 fetchAuthenticatedUser model =
-    let
-        request = Http.request
-            { method = "GET"
-            , headers = [ Http.header "Authorization" ("token " ++ model.oauthToken) ]
-            , url = "https://api.github.com/user"
-            , body = Http.emptyBody
-            , expect = Http.expectJson decodeUsername
-            , timeout = Nothing
-            , withCredentials = False
-            }
-    in
-        Http.send UpdateAuthenticatedUser request
+    githubRequest "/user" model.oauthToken decodeUsername
+    |> Http.send UpdateAuthenticatedUser
 
 decodeUsername : Decode.Decoder String
 decodeUsername =
@@ -123,23 +115,27 @@ decodeUsername =
 
 fetchRepositories : Model -> Cmd Msg
 fetchRepositories model =
-    let
-        request = Http.request
-            { method = "GET"
-            , headers = [ Http.header "Authorization" ("token " ++ model.oauthToken) ]
-            , url = "https://api.github.com/user/repos?affiliation=owner&sort=pushed"
-            , body = Http.emptyBody
-            , expect = Http.expectJson decodeRepositories
-            , timeout = Nothing
-            , withCredentials = False
-            }
-    in
-        Http.send UpdateRepositories request
+    githubRequest "/user/repos?affiliation=owner&sort=pushed" model.oauthToken decodeRepositories
+    |> Http.send UpdateRepositories
 
-decodeRepositories : Decode.Decoder (List Repository)
+decodeRepositories : Decode.Decoder Repositories
 decodeRepositories =
     Decode.list
-        <| Decode.at ["full_name"] Decode.string
+    <| Decode.at ["full_name"] Decode.string
+
+githubRequest : String -> String -> Decode.Decoder a -> Http.Request a
+githubRequest url token decoder =
+    Http.request
+        { method = "GET"
+        , headers = [ Http.header "Authorization" ("token " ++ token) ]
+        , url = "https://api.github.com" ++ url
+        , body = Http.emptyBody
+        , expect = Http.expectJson decoder
+        , timeout = Nothing
+        , withCredentials = False
+        }
+
+
 
 -- SUBSCRIPTIONS
 

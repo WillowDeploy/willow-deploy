@@ -63,9 +63,9 @@ update msg model =
         UpdateAuthenticatedUser (Err _) ->
             ( model, Cmd.none )
         UpdateAuthenticatedUser (Ok authenticatedUser) ->
-            ( { model | authenticatedUser = Just (User authenticatedUser), oauthToken = "" }, Cmd.none )
+            ( { model | authenticatedUser = Just (User authenticatedUser) }, Cmd.none )
         Logout ->
-            ( { model | authenticatedUser = Nothing }, Cmd.none )
+            ( { model | authenticatedUser = Nothing, oauthToken = "" }, Cmd.none )
 
 fetchAuthenticatedUser : Model -> Cmd Msg
 fetchAuthenticatedUser model =

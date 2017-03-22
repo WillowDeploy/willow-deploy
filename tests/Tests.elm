@@ -88,7 +88,7 @@ all =
                     \() ->
                         update (Layout.UpdateAuthenticatedUser (Ok "foobar")) (Model Nothing "sometoken")
                         |> Tuple.first
-                        |> Expect.equal (Model (Just (Layout.User "foobar")) "")
+                        |> Expect.equal (Model (Just (Layout.User "foobar")) "sometoken")
                 ]
             , describe "UpdateOAuthToken"
                 [ test "updates username and resets token" <|
@@ -100,7 +100,7 @@ all =
             , describe "Logout"
                 [ test "resets the authenticated user" <|
                     \() ->
-                        update Layout.Logout (Model (Just (Layout.User "")) "")
+                        update Layout.Logout (Model (Just (Layout.User "")) "some token")
                         |> Tuple.first
                         |> Expect.equal (Model Nothing "")
                 ]

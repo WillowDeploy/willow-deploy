@@ -1,8 +1,8 @@
 module Layout exposing (..)
 
 import Json.Decode as Decode
-import Html exposing (Html, button, div, input, span, text)
-import Html.Attributes exposing (attribute)
+import Html exposing (Html, a, button, div, input, span, text)
+import Html.Attributes exposing (attribute, href)
 import Html.Events exposing (onClick, onInput)
 import Http
 
@@ -26,6 +26,7 @@ type Msg
     = AttemptLogin
     | UpdateOAuthToken String
     | UpdateAuthenticatedUser (Result Http.Error String)
+    | Logout
 
 
 
@@ -41,7 +42,11 @@ view model =
                 , button [ onClick AttemptLogin ] [ text "Login" ]
                 ]
         Just user ->
-            div [] [ span [] [ text user.username ] ]
+            div []
+                [ span [] [ text user.username ]
+                , text " "
+                , a [ href "#", onClick Logout ] [ text "logout" ]
+                ]
 
 
 
@@ -59,6 +64,8 @@ update msg model =
             ( model, Cmd.none )
         UpdateAuthenticatedUser (Ok authenticatedUser) ->
             ( { model | authenticatedUser = Just (User authenticatedUser), oauthToken = "" }, Cmd.none )
+        Logout ->
+            ( { model | authenticatedUser = Nothing }, Cmd.none )
 
 fetchAuthenticatedUser : Model -> Cmd Msg
 fetchAuthenticatedUser model =

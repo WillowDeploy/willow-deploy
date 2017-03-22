@@ -66,6 +66,24 @@ all =
                             Query.fromHtml html
                             |> Query.find [ tag "span" ]
                             |> Query.has [ text "foo" ]
+                , test "Shows a logout link" <|
+                    \() ->
+                        let
+                            html = view (Model (Just (Layout.User "")) "")
+                        in
+                            Query.fromHtml html
+                            |> Query.find [ tag "a" ]
+                            |> Query.has [ attribute "href" "#" ]
+
+                , test "Shows a logout link" <|
+                    \() ->
+                        let
+                            html = view (Model (Just (Layout.User "")) "")
+                        in
+                            Query.fromHtml html
+                            |> Query.find [ tag "a" ]
+                            |> Query.has [ text "logout" ]
+
                 ]
             ]
         , describe "update"
@@ -107,6 +125,16 @@ all =
                             result
                                 |> Tuple.first
                                 |> Expect.equal (Model Nothing "baz")
+                ]
+            , describe "Logout"
+                [ test "resets the authenticated user" <|
+                    \() ->
+                        let
+                            result = update Layout.Logout (Model (Just (Layout.User "")) "")
+                        in
+                            result
+                                |> Tuple.first
+                                |> Expect.equal (Model Nothing "")
                 ]
             ]
         ]

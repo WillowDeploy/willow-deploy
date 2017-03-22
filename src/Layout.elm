@@ -39,29 +39,45 @@ type Msg
 
 view : Model -> Html Msg
 view model =
-    case model.authenticatedUser of
+    let
+        page = case model.authenticatedUser of
+            Nothing ->
+                div [] []
+            Just _ ->
+                viewRepositories model.repositories
+    in
+        div []
+            [ viewNavigation model.authenticatedUser
+            , page
+            ]
+
+viewNavigation : Maybe User -> Html Msg
+viewNavigation authenticatedUser =
+    case authenticatedUser of
         Nothing ->
             div []
                 [ input [ attribute "placeholder" "OAuth token...", onInput UpdateOAuthToken ] []
                 , button [ onClick AttemptLogin ] [ text "Login" ]
                 ]
         Just user ->
-            let
-                repositories = case model.repositories of
-                    Nothing ->
-                        text ""
-                    Just repositories ->
-                        repositories
-                        |> List.map (\(repository) -> li [] [text repository])
-                        |> ul []
-            in
-                div []
-                    [ span [] [ text user.username ]
-                    , text " "
-                    , a [ href "#", onClick Logout ] [ text "logout" ]
-                    , h2 [] [ text "Repositories" ]
-                    , repositories
-                    ]
+            div []
+                [ span [] [ text user.username ]
+                , text " "
+                , a [ href "#", onClick Logout ] [ text "logout" ]
+                ]
+
+viewRepositories : Maybe (List Repository) -> Html Msg
+viewRepositories repositories =
+    case repositories of
+        Nothing ->
+            div [] [ h2 [] [ text "Repositories" ] ]
+        Just repositories ->
+            div []
+                [ h2 [] [ text "Repositories" ]
+                , repositories
+                    |> List.map (\(repository) -> li [] [text repository])
+                    |> ul []
+                ]
 
 
 

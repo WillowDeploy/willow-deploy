@@ -7,7 +7,7 @@ import Layout exposing (Model, Msg)
 
 init : ( Model, Cmd Msg )
 init =
-    ( Model Nothing "", Cmd.none )
+    ( Model Nothing "" Nothing, Cmd.none )
 
 
 main : Program Never Layout.Model Layout.Msg

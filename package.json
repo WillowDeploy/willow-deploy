@@ -1,6 +1,6 @@
 {
   "name": "the-deploy-button",
-  "version": "0.1",
+  "version": "0.1.0",
   "description": "User workflow focused UI for GitHub Releases",
   "main": "index.js",
   "author": "Adam Neumann <aneumann@pivotal.io>",

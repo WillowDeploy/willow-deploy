@@ -1,4 +1,4 @@
-# The Deploy Button
+# The Deploy Button [![Build Status](https://travis-ci.org/the-deploy-button/the-deploy-button.svg?branch=master)](https://travis-ci.org/the-deploy-button/the-deploy-button)
 
 A user-focused workflow driven UI for GitHub Releases. 
 

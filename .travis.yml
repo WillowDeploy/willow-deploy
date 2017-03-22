@@ -11,3 +11,6 @@ install:
   - npm install -g elm
   - npm install -y
   - elm-package install -y
+after_success:
+  - npm build
+  - surge --project ./dist --domain the-deploy-button-acceptance.surge.sh

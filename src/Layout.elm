@@ -2,7 +2,7 @@ module Layout exposing (..)
 
 import Json.Decode as Decode
 import Json.Decode.Extra exposing ((|:))
-import Html exposing (Html, a, button, div, h2, input, li, span, text, ul)
+import Html exposing (Html, a, button, div, h2, input, label, li, span, text, ul)
 import Html.Attributes exposing (attribute, class, href)
 import Html.Events exposing (onClick, onInput)
 import Http
@@ -76,9 +76,11 @@ viewRepositoriesPage : Maybe Repositories -> Html Msg
 viewRepositoriesPage repositories =
     case repositories of
         Nothing ->
-            div [] [ h2 [] [ text "Repositories" ] ]
+            div [ class "repositories-page" ]
+                [ h2 [] [ text "Repositories" ]
+                ]
         Just repositories ->
-            div []
+            div [ class "repositories-page" ]
                 [ h2 [] [ text "Repositories" ]
                 , repositories
                     |> List.map (\(repository) -> li [] [text repository.fullName])
@@ -87,9 +89,14 @@ viewRepositoriesPage repositories =
 
 viewLoginPage : Html Msg
 viewLoginPage =
-    div []
-        [ input [ attribute "placeholder" "OAuth token...", onInput UpdateOAuthToken ] []
-        , button [ onClick AttemptLogin ] [ text "Login" ]
+    div [ class "login-page" ]
+        [ div [ class "login-form" ]
+            [ label [] [ text "Personal Access Token" ]
+            , input [ attribute "placeholder" "Token", onInput UpdateOAuthToken ] []
+            , div [ class "buttons" ]
+                [ button [ onClick AttemptLogin ] [ text "Login" ]
+                ]
+            ]
         ]
 
 

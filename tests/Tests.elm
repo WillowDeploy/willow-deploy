@@ -50,7 +50,7 @@ all =
                     view (Model Nothing "" (Just []))
                     |> Query.fromHtml
                     |> Query.find [ tag "input" ]
-                    |> Query.has [ attribute "placeholder" "OAuth token..." ]
+                    |> Query.has [ attribute "placeholder" "Token" ]
             , test "Shows a login button" <|
                 \() ->
                     view (Model Nothing "" (Just []))
@@ -59,21 +59,7 @@ all =
                     |> Query.has [ text "Login" ]
             ]
         , describe "Repositories Page"
-            [ describe "heading"
-                [ test "Shows a heading describing the list for authenticated user" <|
-                    \() ->
-                        view (Model (Just (Layout.User "")) "" (Just []))
-                        |> Query.fromHtml
-                        |> Query.find [ tag "h2" ]
-                        |> Query.has [ text "Repositories" ]
-                , test "Does not show heading for non-authenticated user" <|
-                    \() ->
-                        view (Model Nothing "" (Just []))
-                        |> Query.fromHtml
-                        |> Query.findAll [ tag "h2" ]
-                        |> Query.count (Expect.equal 0)
-                ]
-            , describe "list"
+            [ describe "list"
                 [ test "Show a UL when the repositories is present" <|
                     \() ->
                         view (Model (Just (Layout.User "")) "" (Just []))

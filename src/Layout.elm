@@ -110,7 +110,7 @@ update msg model =
 fetchAuthenticatedUser : Model -> Cmd Msg
 fetchAuthenticatedUser model =
     githubRequest "/user" model.oauthToken decodeUsername
-    |> Http.send UpdateAuthenticatedUser
+        |> Http.send UpdateAuthenticatedUser
 
 decodeUsername : Decode.Decoder String
 decodeUsername =
@@ -119,7 +119,7 @@ decodeUsername =
 fetchRepositories : Model -> Cmd Msg
 fetchRepositories model =
     githubRequest "/user/repos?affiliation=owner&sort=pushed" model.oauthToken decodeRepositories
-    |> Http.send UpdateRepositories
+        |> Http.send UpdateRepositories
 
 decodeRepositories : Decode.Decoder Repositories
 decodeRepositories =
@@ -128,7 +128,7 @@ decodeRepositories =
 decodeRepository : Decode.Decoder Repository
 decodeRepository =
     Decode.succeed Repository
-        |: (Decode.at ["full_name"] Decode.string)
+        |: (Decode.field "full_name" Decode.string)
 
 githubRequest : String -> String -> Decode.Decoder a -> Http.Request a
 githubRequest url token decoder =

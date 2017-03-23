@@ -1,0 +1,24 @@
+@import 'reset';
+@import 'fontface';
+
+.navigation {
+  height: 40px;
+  background-color: #f8f8f8;
+  border: 0 solid #e7e7e7;
+  border-bottom-width: 1px;
+  margin-bottom: 17px;
+
+  .brand, .links {
+    line-height: 30px;
+  }
+
+  .current-username, .logout-link, .brand {
+    color: #777;
+    margin: 5px;
+    display: inline-block;
+  }
+
+  .links {
+    float: right;
+  }
+}

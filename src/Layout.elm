@@ -3,7 +3,7 @@ module Layout exposing (..)
 import Json.Decode as Decode
 import Json.Decode.Extra exposing ((|:))
 import Html exposing (Html, a, button, div, h2, input, li, span, text, ul)
-import Html.Attributes exposing (attribute, href)
+import Html.Attributes exposing (attribute, class, href)
 import Html.Events exposing (onClick, onInput)
 import Http
 
@@ -60,12 +60,16 @@ viewNavigation : Maybe User -> Html Msg
 viewNavigation authenticatedUser =
     case authenticatedUser of
         Nothing ->
-            div [] []
+            div [ class "navigation" ]
+                [ h2 [ class "brand" ] [ text "The Deploy Button" ]
+                ]
         Just user ->
-            div []
-                [ span [] [ text user.username ]
-                , text " "
-                , a [ href "#", onClick Logout ] [ text "logout" ]
+            div [ class "navigation" ]
+                [ h2 [ class "brand" ] [ text "The Deploy Button" ]
+                , div [ class "links" ]
+                    [ span [ class "current-username" ] [ text user.username ]
+                    , a [ class "logout-link", href "#", onClick Logout ] [ text "logout" ]
+                    ]
                 ]
 
 viewRepositoriesPage : Maybe Repositories -> Html Msg

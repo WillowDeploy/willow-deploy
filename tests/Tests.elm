@@ -5,7 +5,7 @@ import Expect
 import Fuzz exposing (list, int, tuple, string)
 import String
 import Test.Html.Query as Query
-import Test.Html.Selector exposing (text, tag, attribute)
+import Test.Html.Selector exposing (text, tag, attribute, class)
 import Http exposing (get)
 
 import Layout exposing (Model, view, update)
@@ -60,17 +60,17 @@ all =
             ]
         , describe "Repositories Page"
             [ describe "list"
-                [ test "Show a UL when the repositories is present" <|
+                [ test "Show a div when the repositories is present" <|
                     \() ->
                         view (Model (Just (Layout.User "")) "" (Just []))
                         |> Query.fromHtml
-                        |> Query.findAll [ tag "ul" ]
+                        |> Query.findAll [ class "repositories" ]
                         |> Query.count (Expect.equal 1)
-                , test "Shows a LI for each repository" <|
+                , test "Shows a div for each repository" <|
                     \() ->
                         view (Model (Just (Layout.User "")) "" (Just [ Layout.Repository "bar" ]))
                         |> Query.fromHtml
-                        |> Query.find [ tag "li", text "bar" ]
+                        |> Query.find [ tag "div", text "bar" ]
                         |> Query.has [ text "bar" ]
                 , test "Does not show a UL when repositories is nothing" <|
                     \() ->

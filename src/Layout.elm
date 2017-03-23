@@ -2,7 +2,7 @@ module Layout exposing (..)
 
 import Json.Decode as Decode
 import Json.Decode.Extra exposing ((|:))
-import Html exposing (Html, a, button, div, h2, input, label, li, span, text, ul)
+import Html exposing (Html, a, button, div, h2, input, label, span, text)
 import Html.Attributes exposing (attribute, class, href)
 import Html.Events exposing (onClick, onInput)
 import Http
@@ -83,8 +83,8 @@ viewRepositoriesPage repositories =
             div [ class "repositories-page" ]
                 [ h2 [] [ text "Repositories" ]
                 , repositories
-                    |> List.map (\(repository) -> li [] [text repository.fullName])
-                    |> ul []
+                    |> List.map (\(repository) -> div [ class "repository" ] [ text repository.fullName ])
+                    |> div [ class "repositories" ]
                 ]
 
 viewLoginPage : Html Msg

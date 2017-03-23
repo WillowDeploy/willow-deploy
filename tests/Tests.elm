@@ -16,19 +16,7 @@ all =
     describe "The Deploy Button front end"
         [ describe "Navigation bar"
             [ describe "unauthenticated"
-                [ test "Shows a token input" <|
-                    \() ->
-                        view (Model Nothing "" (Just []))
-                        |> Query.fromHtml
-                        |> Query.find [ tag "input" ]
-                        |> Query.has [ attribute "placeholder" "OAuth token..." ]
-                , test "Shows a login button" <|
-                    \() ->
-                        view (Model Nothing "" (Just []))
-                        |> Query.fromHtml
-                        |> Query.find [ tag "button" ]
-                        |> Query.has [ text "Login" ]
-                , test "Does not show current user name" <|
+                [ test "Does not show current user name" <|
                     \() ->
                         view (Model Nothing "" (Just []))
                         |> Query.fromHtml
@@ -42,19 +30,7 @@ all =
                         |> Query.count (Expect.equal 0)
                 ]
             , describe "authenticated"
-                [ test "Does not show a token input" <|
-                    \() ->
-                        view (Model (Just (Layout.User "foo")) "" (Just []))
-                        |> Query.fromHtml
-                        |> Query.findAll [ tag "input" ]
-                        |> Query.count (Expect.equal 0)
-                , test "Does not show a login button" <|
-                    \() ->
-                        view (Model (Just (Layout.User "foo")) "" (Just []))
-                        |> Query.fromHtml
-                        |> Query.findAll [ tag "button" ]
-                        |> Query.count (Expect.equal 0)
-                , test "Shows current user name" <|
+                [ test "Shows current user name" <|
                     \() ->
                         view (Model (Just (Layout.User "foo")) "" (Just []))
                         |> Query.fromHtml
@@ -66,10 +42,23 @@ all =
                         |> Query.fromHtml
                         |> Query.find [ tag "a" ]
                         |> Query.has [ attribute "href" "#", text "logout" ]
-
                 ]
             ]
-        , describe "Repositories"
+        , describe "Login Page"
+            [ test "Shows a token input" <|
+                \() ->
+                    view (Model Nothing "" (Just []))
+                    |> Query.fromHtml
+                    |> Query.find [ tag "input" ]
+                    |> Query.has [ attribute "placeholder" "OAuth token..." ]
+            , test "Shows a login button" <|
+                \() ->
+                    view (Model Nothing "" (Just []))
+                    |> Query.fromHtml
+                    |> Query.find [ tag "button" ]
+                    |> Query.has [ text "Login" ]
+            ]
+        , describe "Repositories Page"
             [ describe "heading"
                 [ test "Shows a heading describing the list for authenticated user" <|
                     \() ->

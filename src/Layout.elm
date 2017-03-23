@@ -47,9 +47,9 @@ view model =
     let
         page = case model.authenticatedUser of
             Nothing ->
-                div [] []
+                viewLoginPage
             Just _ ->
-                viewRepositories model.repositories
+                viewRepositoriesPage model.repositories
     in
         div []
             [ viewNavigation model.authenticatedUser
@@ -60,10 +60,7 @@ viewNavigation : Maybe User -> Html Msg
 viewNavigation authenticatedUser =
     case authenticatedUser of
         Nothing ->
-            div []
-                [ input [ attribute "placeholder" "OAuth token...", onInput UpdateOAuthToken ] []
-                , button [ onClick AttemptLogin ] [ text "Login" ]
-                ]
+            div [] []
         Just user ->
             div []
                 [ span [] [ text user.username ]
@@ -71,8 +68,8 @@ viewNavigation authenticatedUser =
                 , a [ href "#", onClick Logout ] [ text "logout" ]
                 ]
 
-viewRepositories : Maybe Repositories -> Html Msg
-viewRepositories repositories =
+viewRepositoriesPage : Maybe Repositories -> Html Msg
+viewRepositoriesPage repositories =
     case repositories of
         Nothing ->
             div [] [ h2 [] [ text "Repositories" ] ]
@@ -84,6 +81,12 @@ viewRepositories repositories =
                     |> ul []
                 ]
 
+viewLoginPage : Html Msg
+viewLoginPage =
+    div []
+        [ input [ attribute "placeholder" "OAuth token...", onInput UpdateOAuthToken ] []
+        , button [ onClick AttemptLogin ] [ text "Login" ]
+        ]
 
 
 -- UPDATE

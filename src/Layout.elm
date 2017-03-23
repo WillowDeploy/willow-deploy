@@ -1,6 +1,7 @@
 module Layout exposing (..)
 
 import Json.Decode as Decode
+import Json.Decode.Extra exposing ((|:))
 import Html exposing (Html, a, button, div, h2, input, li, span, text, ul)
 import Html.Attributes exposing (attribute, href)
 import Html.Events exposing (onClick, onInput)
@@ -13,7 +14,9 @@ type alias User =
     { username: String
     }
 
-type alias Repository = String
+type alias Repository =
+    { fullName: String
+    }
 
 type alias Repositories = List Repository
 
@@ -77,7 +80,7 @@ viewRepositories repositories =
             div []
                 [ h2 [] [ text "Repositories" ]
                 , repositories
-                    |> List.map (\(repository) -> li [] [text repository])
+                    |> List.map (\(repository) -> li [] [text repository.fullName])
                     |> ul []
                 ]
 
@@ -120,8 +123,12 @@ fetchRepositories model =
 
 decodeRepositories : Decode.Decoder Repositories
 decodeRepositories =
-    Decode.list
-    <| Decode.at ["full_name"] Decode.string
+    Decode.list decodeRepository
+
+decodeRepository : Decode.Decoder Repository
+decodeRepository =
+    Decode.succeed Repository
+        |: (Decode.at ["full_name"] Decode.string)
 
 githubRequest : String -> String -> Decode.Decoder a -> Http.Request a
 githubRequest url token decoder =

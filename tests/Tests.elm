@@ -93,7 +93,7 @@ all =
                         |> Query.count (Expect.equal 1)
                 , test "Shows a LI for each repository" <|
                     \() ->
-                        view (Model (Just (Layout.User "")) "" (Just [ "bar" ]))
+                        view (Model (Just (Layout.User "")) "" (Just [ Layout.Repository "bar" ]))
                         |> Query.fromHtml
                         |> Query.find [ tag "li", text "bar" ]
                         |> Query.has [ text "bar" ]
@@ -148,9 +148,9 @@ all =
                         |> Expect.equal (Model Nothing "" (Just []))
                 , test "does not change the repositories on error" <|
                     \() ->
-                        update (Layout.UpdateRepositories (Err Http.Timeout)) (Model Nothing "" (Just ["repo1"]))
+                        update (Layout.UpdateRepositories (Err Http.Timeout)) (Model Nothing "" (Just [Layout.Repository "repo1"]))
                         |> Tuple.first
-                        |> Expect.equal (Model Nothing "" (Just ["repo1"]))
+                        |> Expect.equal (Model Nothing "" (Just [Layout.Repository "repo1"]))
                 ]
             ]
         ]

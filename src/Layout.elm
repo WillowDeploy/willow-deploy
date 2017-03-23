@@ -24,6 +24,7 @@ type alias Model =
     { authenticatedUser: Maybe User
     , oauthToken: String
     , repositories: Maybe Repositories
+    , repository: Maybe Repository
     }
 
 
@@ -35,6 +36,7 @@ type Msg
     | UpdateOAuthToken String
     | UpdateAuthenticatedUser (Result Http.Error String)
     | UpdateRepositories (Result Http.Error Repositories)
+    | ChooseRepository Repository
     | Logout
 
 
@@ -49,7 +51,11 @@ view model =
             Nothing ->
                 viewLoginPage
             Just _ ->
-                viewRepositoriesPage model.repositories
+                case model.repository of
+                    Nothing ->
+                        viewRepositoriesPage model.repositories
+                    Just _ ->
+                        viewRepositoryPage model.repository
     in
         div []
             [ viewNavigation model.authenticatedUser
@@ -83,9 +89,23 @@ viewRepositoriesPage repositories =
             div [ class "repositories-page" ]
                 [ h2 [] [ text "Repositories" ]
                 , repositories
-                    |> List.map (\(repository) -> div [ class "repository" ] [ text repository.fullName ])
+                    |> List.map (\(repo) -> div [ class "repository", onClick (ChooseRepository repo)] [ text repo.fullName ])
                     |> div [ class "repositories" ]
                 ]
+
+viewRepositoryPage : Maybe Repository -> Html Msg
+viewRepositoryPage repository =
+    let
+        heading = case repository of
+            Nothing ->
+                text "Repository"
+            Just repo ->
+                text ("Repository " ++ repo.fullName)
+    in
+        div [ class "repository-page" ]
+            [ h2 [] [ heading ]
+            ]
+
 
 viewLoginPage : Html Msg
 viewLoginPage =
@@ -120,6 +140,8 @@ update msg model =
             ( { model | repositories = Just repositories }, Cmd.none )
         UpdateRepositories (Err _) ->
             ( model, Cmd.none )
+        ChooseRepository repository ->
+            ( { model | repository = Just repository }, Cmd.none )
 
 fetchAuthenticatedUser : Model -> Cmd Msg
 fetchAuthenticatedUser model =

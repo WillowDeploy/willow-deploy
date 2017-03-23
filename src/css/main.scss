@@ -26,9 +26,14 @@ $page-width: 970px;
   }
 }
 
-.repositories-page, .login-page {
+.repositories-page, .login-page, .repository-page {
   width: $page-width;
   margin: 0 auto;
+}
+
+.repository:hover {
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .login-form {

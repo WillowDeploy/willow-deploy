@@ -21,7 +21,8 @@ type alias Repository =
 type alias Repositories = List Repository
 
 type alias Model =
-    { authenticatedUser: Maybe User
+    { githubBaseUrl: String
+    , authenticatedUser: Maybe User
     , oauthToken: String
     , repositories: Maybe Repositories
     , repository: Maybe Repository
@@ -145,7 +146,7 @@ update msg model =
 
 fetchAuthenticatedUser : Model -> Cmd Msg
 fetchAuthenticatedUser model =
-    githubRequest "/user" model.oauthToken decodeUsername
+    githubRequest model.githubBaseUrl "/user" model.oauthToken decodeUsername
         |> Http.send UpdateAuthenticatedUser
 
 decodeUsername : Decode.Decoder String
@@ -154,7 +155,7 @@ decodeUsername =
 
 fetchRepositories : Model -> Cmd Msg
 fetchRepositories model =
-    githubRequest "/user/repos?affiliation=owner&sort=pushed" model.oauthToken decodeRepositories
+    githubRequest model.githubBaseUrl "/user/repos?affiliation=owner&sort=pushed" model.oauthToken decodeRepositories
         |> Http.send UpdateRepositories
 
 decodeRepositories : Decode.Decoder Repositories
@@ -166,12 +167,12 @@ decodeRepository =
     Decode.succeed Repository
         |: (Decode.field "full_name" Decode.string)
 
-githubRequest : String -> String -> Decode.Decoder a -> Http.Request a
-githubRequest url token decoder =
+githubRequest : String -> String -> String -> Decode.Decoder a -> Http.Request a
+githubRequest baseUrl url token decoder =
     Http.request
         { method = "GET"
         , headers = [ Http.header "Authorization" ("token " ++ token) ]
-        , url = "https://api.github.com" ++ url
+        , url = baseUrl ++ url
         , body = Http.emptyBody
         , expect = Http.expectJson decoder
         , timeout = Nothing

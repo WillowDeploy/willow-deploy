@@ -1,0 +1,67 @@
+buildscript {
+  ext.springBootVersion = '1.5.2.RELEASE'
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+  }
+}
+
+
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+
+repositories {
+  jcenter()
+  mavenCentral()
+}
+
+ext {
+  springBootVersion = '1.5.2.RELEASE'
+}
+
+dependencies {
+  compile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
+  compile group: 'net.code-story', name: 'simplelenium', version: '2.2'
+
+  testCompile "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
+  testCompile 'junit:junit:4.12'
+}
+
+sourceSets {
+  test {
+    java.srcDir 'src/test'
+    resources.srcDir 'src/test/resources'
+  }
+  main {
+    java.srcDir 'src/main'
+    resources.srcDir 'src/main/resources'
+  }
+}
+
+task buildFrontEnd(type:Exec) {
+  workingDir '../'
+
+  commandLine './build.sh'
+
+  ext.buildDir = '../dist'
+}
+
+task copyFrontEnd(type:Copy) {
+  from buildFrontEnd.buildDir
+
+  into "build/resources/main/public/"
+}
+copyFrontEnd.dependsOn("buildFrontEnd")
+
+
+test.dependsOn("copyFrontEnd", "cleanTest")
+
+
+task testChromeMac(type:Test) {
+  systemProperty 'browser', 'chrome'
+  systemProperty 'chromedriver.url', "https://chromedriver.storage.googleapis.com/2.28/chromedriver_mac64.zip"
+  systemProperty 'chromedriver.exe', "chromedriver"
+}
+testChromeMac.dependsOn("copyFrontEnd", "cleanTest")

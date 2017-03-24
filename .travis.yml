@@ -11,6 +11,7 @@ install:
   - npm install -g elm
   - npm install -y
   - elm-package install -y
+script: ./run-tests.sh
 after_success:
   - npm run-script build
   - surge --project ./dist --domain the-deploy-button-acceptance.surge.sh

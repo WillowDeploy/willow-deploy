@@ -1,12 +1,21 @@
 language: node_js
 node_js:
   - "7"
+addons:
+  apt:
+    packages:
+      - oracle-java8-installer
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 cache:
   yarn: true
   directories:
     - node_modules # NPM packages
     - elm-stuff # Elm packages
     - tests/elm-stuff # Elm testing packages
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
 install:
   - npm install -g elm
   - npm install -y

@@ -14,7 +14,7 @@ fi
 pushd "featuretests"
 
 
-NODE_ENV=test ./gradlew test
+./gradlew test --debug
 
 if [ $? -eq 0 ]
 then

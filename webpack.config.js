@@ -1,9 +1,14 @@
 path = require("path");
 
+var entryApp = './src/index.js';
+if (process.env.NODE_ENV === 'test') {
+  entryApp = './src/index-test.js';
+}
+
 module.exports = {
   entry: {
     app: [
-      './src/index.js'
+      entryApp
     ]
   },
 

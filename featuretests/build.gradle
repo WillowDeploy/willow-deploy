@@ -27,6 +27,8 @@ dependencies {
 
   testCompile "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
   testCompile 'junit:junit:4.12'
+  testCompile 'org.mock-server:mockserver:3.10.4'
+  testCompile 'org.mock-server:mockserver-netty:3.10.4'
 }
 
 sourceSets {
@@ -43,7 +45,7 @@ sourceSets {
 task buildFrontEnd(type:Exec) {
   workingDir '../'
 
-  commandLine './build.sh'
+  commandLine './build-test.sh'
 
   ext.buildDir = '../dist'
 }

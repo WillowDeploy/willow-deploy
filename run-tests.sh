@@ -20,6 +20,8 @@ javac -version
 
 echo "'which javac' = '$(which javac)'"
 
+echo "JAVA_HOME = '$JAVA_HOME'"
+
 
 ./gradlew test
 

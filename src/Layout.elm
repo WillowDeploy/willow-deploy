@@ -22,9 +22,13 @@ type alias Repository =
 
 type alias Repositories = List Repository
 
-type alias Release = String
+type alias Release =
+    { name: String
+    , draft: Bool
+    , prerelease: Bool
+    }
 
-type alias Releases = List String
+type alias Releases = List Release
 
 type alias Model =
     { githubBaseUrl: String
@@ -64,7 +68,7 @@ view model =
                     Nothing ->
                         viewRepositoriesPage model.repositories
                     Just _ ->
-                        viewRepositoryPage model.repository
+                        viewRepositoryPage model.repository model.releases
     in
         div []
             [ viewNavigation model.authenticatedUser
@@ -102,8 +106,8 @@ viewRepositoriesPage repositories =
                     |> div [ class "repositories" ]
                 ]
 
-viewRepositoryPage : Maybe Repository -> Html Msg
-viewRepositoryPage repository =
+viewRepositoryPage : Maybe Repository -> Maybe Releases -> Html Msg
+viewRepositoryPage repository releases =
     let
         heading = case repository of
             Nothing ->
@@ -113,6 +117,31 @@ viewRepositoryPage repository =
     in
         div [ class "repository-page" ]
             [ h2 [] [ heading ]
+            , viewReleases releases
+            ]
+
+viewReleases : Maybe Releases -> Html Msg
+viewReleases releases =
+    case releases of
+        Nothing ->
+            div [ class "releases" ] []
+        Just releases ->
+            releases
+                |> List.map viewRelease
+                |> div [ class "releases" ]
+
+viewRelease : Release -> Html Msg
+viewRelease release =
+    let
+        label = if release.draft then
+                    "Draft"
+                else if release.prerelease then
+                    "Pre-release"
+                else
+                    "Release"
+    in
+        div [ class "release" ]
+            [ text (label ++ ": " ++ release.name)
             ]
 
 
@@ -150,7 +179,7 @@ update msg model =
         UpdateRepositories (Err _) ->
             ( model, Cmd.none )
         ChooseRepository repository ->
-            ( { model | repository = Just repository }, Cmd.none )
+            ( { model | repository = Just repository }, fetchReleases model.githubBaseUrl model.oauthToken repository )
         UpdateReleases (Ok releases) ->
             ( { model | releases = Just releases }, Cmd.none )
         UpdateReleases (Err _) ->
@@ -180,6 +209,23 @@ decodeRepository =
         |: (Decode.field "full_name" Decode.string)
         |: (Decode.field "name" Decode.string)
         |: (Decode.at [ "owner", "login" ] Decode.string)
+
+fetchReleases : String -> String -> Repository -> Cmd Msg
+fetchReleases githubBaseUrl oauthToken repo =
+    githubRequest githubBaseUrl ("/repos/" ++ repo.ownerLogin ++ "/" ++ repo.name ++ "/releases") oauthToken decodeReleases
+        |> Http.send UpdateReleases
+
+decodeReleases : Decode.Decoder Releases
+decodeReleases =
+    Decode.list decodeRelease
+
+decodeRelease : Decode.Decoder Release
+decodeRelease =
+    Decode.succeed Release
+        |: (Decode.field "name" Decode.string)
+        |: (Decode.field "draft" Decode.bool)
+        |: (Decode.field "prerelease" Decode.bool)
+
 
 githubRequest : String -> String -> String -> Decode.Decoder a -> Http.Request a
 githubRequest baseUrl url token decoder =

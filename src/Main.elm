@@ -11,7 +11,7 @@ type alias Flags =
 
 init : Flags -> ( Model, Cmd Msg )
 init flags =
-    ( Model flags.githubBaseUrl  Nothing "" Nothing Nothing, Cmd.none )
+    ( Model flags.githubBaseUrl  Nothing "" Nothing Nothing Nothing, Cmd.none )
 
 
 main : Program Flags Layout.Model Layout.Msg

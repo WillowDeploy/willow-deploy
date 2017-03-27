@@ -9,7 +9,7 @@ import Test.Html.Query as Query
 import Test.Html.Selector exposing (text, tag, attribute, class)
 import Http exposing (get)
 
-import Layout exposing (Model, decodeRepository, view, update)
+import Layout exposing (Model, decodeRelease, decodeRepository, view, update)
 
 
 all : Test
@@ -72,9 +72,9 @@ all =
             , describe "UpdateReleases"
                 [ test "updates the releases on model" <|
                     \() ->
-                        update (Layout.UpdateReleases (Ok [ "v1" ])) (Model "" Nothing "" Nothing Nothing Nothing)
+                        update (Layout.UpdateReleases (Ok [ Layout.Release "v1" True True ])) (Model "" Nothing "" Nothing Nothing Nothing)
                         |> Tuple.first
-                        |> Expect.equal (Model "" Nothing "" Nothing Nothing (Just [ "v1" ]))
+                        |> Expect.equal (Model "" Nothing "" Nothing Nothing (Just [ Layout.Release "v1" True True ]))
                 , test "does not update releases on error" <|
                     \() ->
                         update (Layout.UpdateReleases (Err Http.Timeout)) (Model "" Nothing "" Nothing Nothing Nothing)
@@ -88,5 +88,12 @@ all =
                     "{\"full_name\": \"foo\", \"name\": \"bar\", \"owner\": {\"login\": \"baz\"}}"
                     |> decodeString decodeRepository
                     |> Expect.equal (Ok (Layout.Repository "foo" "bar" "baz"))
+            ]
+        , describe "decodeRelease"
+            [ test "all fields present" <|
+                \() ->
+                    "{\"name\": \"foobar\", \"draft\": true, \"prerelease\": false}"
+                    |> decodeString decodeRelease
+                    |> Expect.equal (Ok (Layout.Release "foobar" True False))
             ]
         ]

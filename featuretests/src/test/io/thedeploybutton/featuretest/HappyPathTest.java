@@ -73,6 +73,13 @@ public class HappyPathTest extends SeleniumTest {
         find("h2").withText("Repository noizwaves/repo-with-releases")
             .should().exist();
 
+        find(".release").withText("Release v1")
+            .should().exist();
+        find(".release").withText("Release v2")
+            .should().exist();
+        find(".release").withText("Release v3")
+            .should().exist();
+
 
         find(".logout-link").click();
 

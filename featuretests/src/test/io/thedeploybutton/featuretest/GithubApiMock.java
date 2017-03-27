@@ -299,6 +299,153 @@ public class GithubApiMock {
                         "  }\n" +
                         "]\n")
             );
+
+        mockServer
+            .when(
+                request()
+                    .withMethod("OPTIONS")
+                    .withPath("/repos/noizwaves/repo-with-releases/releases")
+            )
+            .respond(
+                response()
+                    .withStatusCode(204)
+                    .withHeader("Access-Control-Allow-Origin", "*")
+                    .withHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, PUT, DELETE")
+                    .withHeader("Access-Control-Allow-Headers", "Authorization, Content-Type, If-Match, If-Modified-Since, If-None-Match, If-Unmodified-Since, Accept-Encoding, X-GitHub-OTP, X-Requested-With")
+            );
+
+        mockServer
+            .when(
+                request()
+                    .withMethod("GET")
+                    .withPath("/repos/noizwaves/repo-with-releases/releases")
+                    .withHeader("Authorization", "token 92fgug27fg91fgfh")
+            )
+            .respond(
+                response()
+                    .withStatusCode(200)
+                    .withHeader("Access-Control-Allow-Origin", "*")
+                    .withHeader("Content-Type", "application/json; charset=utf-8")
+                    .withBody("[\n" +
+                        "  {\n" +
+                        "    \"url\": \"https://api.github.com/repos/noizwaves/repo-with-releases/releases/5809637\",\n" +
+                        "    \"assets_url\": \"https://api.github.com/repos/noizwaves/repo-with-releases/releases/5809637/assets\",\n" +
+                        "    \"upload_url\": \"https://uploads.github.com/repos/noizwaves/repo-with-releases/releases/5809637/assets{?name,label}\",\n" +
+                        "    \"html_url\": \"https://github.com/noizwaves/repo-with-releases/releases/tag/untagged-2bc6a4ea637f573a413c\",\n" +
+                        "    \"id\": 5809637,\n" +
+                        "    \"tag_name\": \"build-42313\",\n" +
+                        "    \"target_commitish\": \"master\",\n" +
+                        "    \"name\": \"Release v3\",\n" +
+                        "    \"draft\": true,\n" +
+                        "    \"author\": {\n" +
+                        "      \"login\": \"noizwaves\",\n" +
+                        "      \"id\": 1007983,\n" +
+                        "      \"avatar_url\": \"https://avatars3.githubusercontent.com/u/1007983?v=3\",\n" +
+                        "      \"gravatar_id\": \"\",\n" +
+                        "      \"url\": \"https://api.github.com/users/noizwaves\",\n" +
+                        "      \"html_url\": \"https://github.com/noizwaves\",\n" +
+                        "      \"followers_url\": \"https://api.github.com/users/noizwaves/followers\",\n" +
+                        "      \"following_url\": \"https://api.github.com/users/noizwaves/following{/other_user}\",\n" +
+                        "      \"gists_url\": \"https://api.github.com/users/noizwaves/gists{/gist_id}\",\n" +
+                        "      \"starred_url\": \"https://api.github.com/users/noizwaves/starred{/owner}{/repo}\",\n" +
+                        "      \"subscriptions_url\": \"https://api.github.com/users/noizwaves/subscriptions\",\n" +
+                        "      \"organizations_url\": \"https://api.github.com/users/noizwaves/orgs\",\n" +
+                        "      \"repos_url\": \"https://api.github.com/users/noizwaves/repos\",\n" +
+                        "      \"events_url\": \"https://api.github.com/users/noizwaves/events{/privacy}\",\n" +
+                        "      \"received_events_url\": \"https://api.github.com/users/noizwaves/received_events\",\n" +
+                        "      \"type\": \"User\",\n" +
+                        "      \"site_admin\": false\n" +
+                        "    },\n" +
+                        "    \"prerelease\": false,\n" +
+                        "    \"created_at\": \"2017-03-20T21:19:06Z\",\n" +
+                        "    \"published_at\": null,\n" +
+                        "    \"assets\": [\n" +
+                        "\n" +
+                        "    ],\n" +
+                        "    \"tarball_url\": null,\n" +
+                        "    \"zipball_url\": null,\n" +
+                        "    \"body\": \"\"\n" +
+                        "  },\n" +
+                        "  {\n" +
+                        "    \"url\": \"https://api.github.com/repos/noizwaves/repo-with-releases/releases/5809631\",\n" +
+                        "    \"assets_url\": \"https://api.github.com/repos/noizwaves/repo-with-releases/releases/5809631/assets\",\n" +
+                        "    \"upload_url\": \"https://uploads.github.com/repos/noizwaves/repo-with-releases/releases/5809631/assets{?name,label}\",\n" +
+                        "    \"html_url\": \"https://github.com/noizwaves/repo-with-releases/releases/tag/build-12313\",\n" +
+                        "    \"id\": 5809631,\n" +
+                        "    \"tag_name\": \"build-12313\",\n" +
+                        "    \"target_commitish\": \"master\",\n" +
+                        "    \"name\": \"Release v2\",\n" +
+                        "    \"draft\": false,\n" +
+                        "    \"author\": {\n" +
+                        "      \"login\": \"noizwaves\",\n" +
+                        "      \"id\": 1007983,\n" +
+                        "      \"avatar_url\": \"https://avatars3.githubusercontent.com/u/1007983?v=3\",\n" +
+                        "      \"gravatar_id\": \"\",\n" +
+                        "      \"url\": \"https://api.github.com/users/noizwaves\",\n" +
+                        "      \"html_url\": \"https://github.com/noizwaves\",\n" +
+                        "      \"followers_url\": \"https://api.github.com/users/noizwaves/followers\",\n" +
+                        "      \"following_url\": \"https://api.github.com/users/noizwaves/following{/other_user}\",\n" +
+                        "      \"gists_url\": \"https://api.github.com/users/noizwaves/gists{/gist_id}\",\n" +
+                        "      \"starred_url\": \"https://api.github.com/users/noizwaves/starred{/owner}{/repo}\",\n" +
+                        "      \"subscriptions_url\": \"https://api.github.com/users/noizwaves/subscriptions\",\n" +
+                        "      \"organizations_url\": \"https://api.github.com/users/noizwaves/orgs\",\n" +
+                        "      \"repos_url\": \"https://api.github.com/users/noizwaves/repos\",\n" +
+                        "      \"events_url\": \"https://api.github.com/users/noizwaves/events{/privacy}\",\n" +
+                        "      \"received_events_url\": \"https://api.github.com/users/noizwaves/received_events\",\n" +
+                        "      \"type\": \"User\",\n" +
+                        "      \"site_admin\": false\n" +
+                        "    },\n" +
+                        "    \"prerelease\": true,\n" +
+                        "    \"created_at\": \"2017-03-20T21:03:42Z\",\n" +
+                        "    \"published_at\": \"2017-03-20T21:20:20Z\",\n" +
+                        "    \"assets\": [\n" +
+                        "\n" +
+                        "    ],\n" +
+                        "    \"tarball_url\": \"https://api.github.com/repos/noizwaves/repo-with-releases/tarball/build-12313\",\n" +
+                        "    \"zipball_url\": \"https://api.github.com/repos/noizwaves/repo-with-releases/zipball/build-12313\",\n" +
+                        "    \"body\": \"\"\n" +
+                        "  },\n" +
+                        "  {\n" +
+                        "    \"url\": \"https://api.github.com/repos/noizwaves/repo-with-releases/releases/5809619\",\n" +
+                        "    \"assets_url\": \"https://api.github.com/repos/noizwaves/repo-with-releases/releases/5809619/assets\",\n" +
+                        "    \"upload_url\": \"https://uploads.github.com/repos/noizwaves/repo-with-releases/releases/5809619/assets{?name,label}\",\n" +
+                        "    \"html_url\": \"https://github.com/noizwaves/repo-with-releases/releases/tag/build-01213\",\n" +
+                        "    \"id\": 5809619,\n" +
+                        "    \"tag_name\": \"build-01213\",\n" +
+                        "    \"target_commitish\": \"master\",\n" +
+                        "    \"name\": \"Release v1\",\n" +
+                        "    \"draft\": false,\n" +
+                        "    \"author\": {\n" +
+                        "      \"login\": \"noizwaves\",\n" +
+                        "      \"id\": 1007983,\n" +
+                        "      \"avatar_url\": \"https://avatars3.githubusercontent.com/u/1007983?v=3\",\n" +
+                        "      \"gravatar_id\": \"\",\n" +
+                        "      \"url\": \"https://api.github.com/users/noizwaves\",\n" +
+                        "      \"html_url\": \"https://github.com/noizwaves\",\n" +
+                        "      \"followers_url\": \"https://api.github.com/users/noizwaves/followers\",\n" +
+                        "      \"following_url\": \"https://api.github.com/users/noizwaves/following{/other_user}\",\n" +
+                        "      \"gists_url\": \"https://api.github.com/users/noizwaves/gists{/gist_id}\",\n" +
+                        "      \"starred_url\": \"https://api.github.com/users/noizwaves/starred{/owner}{/repo}\",\n" +
+                        "      \"subscriptions_url\": \"https://api.github.com/users/noizwaves/subscriptions\",\n" +
+                        "      \"organizations_url\": \"https://api.github.com/users/noizwaves/orgs\",\n" +
+                        "      \"repos_url\": \"https://api.github.com/users/noizwaves/repos\",\n" +
+                        "      \"events_url\": \"https://api.github.com/users/noizwaves/events{/privacy}\",\n" +
+                        "      \"received_events_url\": \"https://api.github.com/users/noizwaves/received_events\",\n" +
+                        "      \"type\": \"User\",\n" +
+                        "      \"site_admin\": false\n" +
+                        "    },\n" +
+                        "    \"prerelease\": false,\n" +
+                        "    \"created_at\": \"2017-03-20T21:01:46Z\",\n" +
+                        "    \"published_at\": \"2017-03-20T21:19:22Z\",\n" +
+                        "    \"assets\": [\n" +
+                        "\n" +
+                        "    ],\n" +
+                        "    \"tarball_url\": \"https://api.github.com/repos/noizwaves/repo-with-releases/tarball/build-01213\",\n" +
+                        "    \"zipball_url\": \"https://api.github.com/repos/noizwaves/repo-with-releases/zipball/build-01213\",\n" +
+                        "    \"body\": \"\"\n" +
+                        "  }\n" +
+                        "]\n")
+            );
     }
 
     public void stop() {

@@ -16,9 +16,15 @@ type alias User =
 
 type alias Repository =
     { fullName: String
+    , name: String
+    , ownerLogin: String
     }
 
 type alias Repositories = List Repository
+
+type alias Release = String
+
+type alias Releases = List String
 
 type alias Model =
     { githubBaseUrl: String
@@ -26,6 +32,7 @@ type alias Model =
     , oauthToken: String
     , repositories: Maybe Repositories
     , repository: Maybe Repository
+    , releases: Maybe Releases
     }
 
 
@@ -38,6 +45,7 @@ type Msg
     | UpdateAuthenticatedUser (Result Http.Error String)
     | UpdateRepositories (Result Http.Error Repositories)
     | ChooseRepository Repository
+    | UpdateReleases (Result Http.Error Releases)
     | Logout
 
 
@@ -143,6 +151,10 @@ update msg model =
             ( model, Cmd.none )
         ChooseRepository repository ->
             ( { model | repository = Just repository }, Cmd.none )
+        UpdateReleases (Ok releases) ->
+            ( { model | releases = Just releases }, Cmd.none )
+        UpdateReleases (Err _) ->
+            ( model, Cmd.none )
 
 fetchAuthenticatedUser : Model -> Cmd Msg
 fetchAuthenticatedUser model =
@@ -166,6 +178,8 @@ decodeRepository : Decode.Decoder Repository
 decodeRepository =
     Decode.succeed Repository
         |: (Decode.field "full_name" Decode.string)
+        |: (Decode.field "name" Decode.string)
+        |: (Decode.at [ "owner", "login" ] Decode.string)
 
 githubRequest : String -> String -> String -> Decode.Decoder a -> Http.Request a
 githubRequest baseUrl url token decoder =

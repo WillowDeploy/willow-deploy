@@ -13,15 +13,6 @@ fi
 
 pushd "featuretests"
 
-echo "--------------------- javac -------------------"
-
-echo "javac -version"
-javac -version
-
-echo "'which javac' = '$(which javac)'"
-
-echo "JAVA_HOME = '$JAVA_HOME'"
-
 
 ./gradlew test
 

@@ -68,11 +68,11 @@ viewNavigation authenticatedUser =
     case authenticatedUser of
         Nothing ->
             div [ class "navigation" ]
-                [ h2 [ class "brand" ] [ text "The Deploy Button" ]
+                [ h2 [ class "brand" ] [ text "Willow Deploy" ]
                 ]
         Just user ->
             div [ class "navigation" ]
-                [ h2 [ class "brand" ] [ text "The Deploy Button" ]
+                [ h2 [ class "brand" ] [ text "Willow Deploy" ]
                 , div [ class "links" ]
                     [ span [ class "current-username" ] [ text user.username ]
                     , a [ class "logout-link", href "#", onClick Logout ] [ text "logout" ]

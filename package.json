@@ -1,11 +1,11 @@
 {
-  "name": "the-deploy-button",
+  "name": "willow-deplot",
   "version": "0.1.0",
   "description": "User workflow focused UI for GitHub Releases",
   "main": "index.js",
   "author": "Adam Neumann <aneumann@pivotal.io>",
   "license": "MIT",
-  "repository": "https://github.com/the-deploy-button/the-deploy-button.git",
+  "repository": "https://github.com/WillowDeploy/willow-deploy.git",
   "dependencies": {
     "css-loader": "^0.27.3",
     "elm-test": "^0.18.2",

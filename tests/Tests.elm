@@ -13,7 +13,7 @@ import Layout exposing (Model, view, update)
 
 all : Test
 all =
-    describe "The Deploy Button front end"
+    describe "Willow Deploy front end"
         [ describe "Navigation bar"
             [ describe "unauthenticated"
                 [ test "Does not show current user name" <|

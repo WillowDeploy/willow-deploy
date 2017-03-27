@@ -1,7 +1,7 @@
 {
     "version": "0.1.0",
     "summary": "User workflow focused UI for GitHub Releases",
-    "repository": "https://github.com/the-deploy-button/the-deploy-button.git",
+    "repository": "https://github.com/WillowDeploy/willow-deploy.git",
     "license": "MIT",
     "source-directories": [
         "src"

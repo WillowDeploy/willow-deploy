@@ -1,4 +1,4 @@
-# The Deploy Button [![Build Status](https://travis-ci.org/the-deploy-button/the-deploy-button.svg?branch=master)](https://travis-ci.org/the-deploy-button/the-deploy-button)
+# Willow Deploy [![Build Status](https://travis-ci.org/WillowDeploy/willow-deploy.svg?branch=master)](https://travis-ci.org/WillowDeploy/willow-deploy)
 
 A user-focused workflow driven UI for GitHub Releases. 
 

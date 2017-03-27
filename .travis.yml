@@ -25,4 +25,4 @@ install:
 script: ./run-tests.sh
 after_success:
   - npm run-script build
-  - surge --project ./dist --domain the-deploy-button-acceptance.surge.sh
+  - surge --project ./dist --domain willow-deploy-acceptance.surge.sh

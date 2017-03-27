@@ -13,8 +13,15 @@ fi
 
 pushd "featuretests"
 
+echo "--------------------- javac -------------------"
 
-./gradlew test --debug
+echo "javac -version"
+javac -version
+
+echo "'which javac' = '$(which javac)'"
+
+
+./gradlew test
 
 if [ $? -eq 0 ]
 then

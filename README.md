@@ -35,4 +35,6 @@ To get started developing, after cloning this repo run:
 
 # Testing
 
-Unit tests are written using [elm-test](http://package.elm-lang.org/packages/elm-community/elm-test) and [elm-html-test](http://package.elm-lang.org/packages/eeue56/elm-html-test). Run all tests using the CLI test runner by invoking `yarn test`.
+Unit tests are written using [elm-test](http://package.elm-lang.org/packages/elm-community/elm-test) and [elm-html-test](http://package.elm-lang.org/packages/eeue56/elm-html-test). Run unit tests using the CLI test runner by invoking `yarn test`.
+
+Feature tests are written using [simplelenium](https://github.com/dgageot/simplelenium). Run feature tests using Gradle by invoking `cd featuretests && ./gradlew test`.

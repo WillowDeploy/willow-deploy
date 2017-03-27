@@ -14,73 +14,7 @@ import Layout exposing (Model, view, update)
 all : Test
 all =
     describe "Willow Deploy front end"
-        [ describe "Navigation bar"
-            [ describe "unauthenticated"
-                [ test "Does not show current user name" <|
-                    \() ->
-                        view (Model "" Nothing "" (Just []) Nothing)
-                        |> Query.fromHtml
-                        |> Query.findAll [ tag "span" ]
-                        |> Query.count (Expect.equal 0)
-                , test "Does not show logout link" <|
-                    \() ->
-                        view (Model "" Nothing "" (Just []) Nothing)
-                        |> Query.fromHtml
-                        |> Query.findAll [ tag "a" ]
-                        |> Query.count (Expect.equal 0)
-                ]
-            , describe "authenticated"
-                [ test "Shows current user name" <|
-                    \() ->
-                        view (Model "" (Just (Layout.User "foo")) "" (Just []) Nothing)
-                        |> Query.fromHtml
-                        |> Query.find [ tag "span" ]
-                        |> Query.has [ text "foo" ]
-                , test "Shows a logout link" <|
-                    \() ->
-                        view (Model "" (Just (Layout.User "")) "" (Just []) Nothing)
-                        |> Query.fromHtml
-                        |> Query.find [ tag "a" ]
-                        |> Query.has [ attribute "href" "#", text "logout" ]
-                ]
-            ]
-        , describe "Login Page"
-            [ test "Shows a token input" <|
-                \() ->
-                    view (Model "" Nothing "" (Just []) Nothing)
-                    |> Query.fromHtml
-                    |> Query.find [ tag "input" ]
-                    |> Query.has [ attribute "placeholder" "Token" ]
-            , test "Shows a login button" <|
-                \() ->
-                    view (Model "" Nothing "" (Just []) Nothing)
-                    |> Query.fromHtml
-                    |> Query.find [ tag "button" ]
-                    |> Query.has [ text "Login" ]
-            ]
-        , describe "Repositories Page"
-            [ describe "list"
-                [ test "Show a div when the repositories is present" <|
-                    \() ->
-                        view (Model "" (Just (Layout.User "")) "" (Just []) Nothing)
-                        |> Query.fromHtml
-                        |> Query.findAll [ class "repositories" ]
-                        |> Query.count (Expect.equal 1)
-                , test "Shows a div for each repository" <|
-                    \() ->
-                        view (Model "" (Just (Layout.User "")) "" (Just [ Layout.Repository "bar" ]) Nothing)
-                        |> Query.fromHtml
-                        |> Query.find [ tag "div", text "bar" ]
-                        |> Query.has [ text "bar" ]
-                , test "Does not show a UL when repositories is nothing" <|
-                    \() ->
-                        view (Model "" (Just (Layout.User "")) "" Nothing Nothing)
-                        |> Query.fromHtml
-                        |> Query.findAll [ tag "ul" ]
-                        |> Query.count (Expect.equal 0)
-                ]
-            ]
-        , describe "update"
+        [ describe "update"
             [ describe "AttemptLogin"
                 [ test "does not change the model" <|
                     \() ->

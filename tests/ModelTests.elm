@@ -12,46 +12,46 @@ tests =
         [ describe "isDraft"
             [ test "when 'draft' is True" <|
                 \() ->
-                    Release "" True False
+                    Release "" True False ""
                     |> isDraft
                     |> Expect.equal True
             , test "when 'draft' is False" <|
                 \() ->
-                    Release "" False False
+                    Release "" False False ""
                     |> isDraft
                     |> Expect.equal False
             ]
         , describe "isPreRelease"
             [ test "when 'draft' is True" <|
                 \() ->
-                    Release "" True False
+                    Release "" True False ""
                     |> isPreRelease
                     |> Expect.equal False
             , test "when 'draft' is False and 'prerelease' is False" <|
                 \() ->
-                    Release "" False False
+                    Release "" False False ""
                     |> isPreRelease
                     |> Expect.equal False
             , test "when 'draft' is False and 'prerelease' is True" <|
                 \() ->
-                    Release "" False True
+                    Release "" False True ""
                     |> isPreRelease
                     |> Expect.equal True
             ]
         , describe "isRelease"
             [ test "when 'draft' is True" <|
                 \() ->
-                    Release "" True False
+                    Release "" True False ""
                     |> isRelease
                     |> Expect.equal False
             , test "when 'draft' is False and 'prerelease' is True" <|
                 \() ->
-                    Release "" False True
+                    Release "" False True ""
                     |> isRelease
                     |> Expect.equal False
             , test "when 'draft' is False and 'prerelease' is False" <|
                 \() ->
-                    Release "" False False
+                    Release "" False False ""
                     |> isRelease
                     |> Expect.equal True
             ]

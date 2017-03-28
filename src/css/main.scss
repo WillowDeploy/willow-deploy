@@ -4,13 +4,20 @@
 $page-width: 970px;
 
 $spacing: 10px;
+$big-spacing: $spacing * 2;
+
+$padding: $spacing * 1.5;
+
+$font-color: #222;
+$background-color: #f8f8f8;
+$border-color: #e7e7e7;
 
 .navigation {
   height: 40px;
-  background-color: #f8f8f8;
-  border: 0 solid #e7e7e7;
+  background-color: $background-color;
+  border: 0 solid $border-color;
   border-bottom-width: 1px;
-  margin-bottom: 17px;
+  margin-bottom: $big-spacing;
   padding: 0 $spacing;
 
   .navigation-bar {
@@ -113,9 +120,24 @@ $spacing: 10px;
 
   .release {
     width: 250px;
-    border: 1px solid #ddd;
+    border: 1px solid $border-color;
     border-radius: 4px;
-    padding: 15px;
-    margin-bottom: 15px;
+    padding: $padding;
+    margin-bottom: $padding;
+
+    .name {
+      display: block;
+      margin: (-$padding) (-$padding) 0 (-$padding);
+      padding: $padding;
+
+      background-color: $background-color;
+      text-decoration: none;
+      border-bottom: 1px solid $border-color;
+      font-size: 1.1rem;
+    }
+
+    .name, .name:hover {
+      color: $font-color;
+    }
   }
 }

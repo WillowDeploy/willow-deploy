@@ -67,9 +67,9 @@ tests =
         , describe "UpdateReleases"
             [ test "updates the releases on model" <|
                 \() ->
-                    update (UpdateReleases (Ok [ Release "v1" True True ])) (Model "" Nothing "" Nothing Nothing Nothing)
+                    update (UpdateReleases (Ok [ Release "v1" True True "url" ])) (Model "" Nothing "" Nothing Nothing Nothing)
                     |> Tuple.first
-                    |> Expect.equal (Model "" Nothing "" Nothing Nothing (Just [ Release "v1" True True ]))
+                    |> Expect.equal (Model "" Nothing "" Nothing Nothing (Just [ Release "v1" True True "url" ]))
             , test "does not update releases on error" <|
                 \() ->
                     update (UpdateReleases (Err Http.Timeout)) (Model "" Nothing "" Nothing Nothing Nothing)

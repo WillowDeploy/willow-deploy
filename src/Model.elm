@@ -17,6 +17,7 @@ type alias Release =
     { name: String
     , draft: Bool
     , prerelease: Bool
+    , url: String
     }
 
 type alias Releases = List Release

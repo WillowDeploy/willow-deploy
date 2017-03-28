@@ -75,6 +75,7 @@ decodeRelease =
         |: (Decode.field "name" Decode.string)
         |: (Decode.field "draft" Decode.bool)
         |: (Decode.field "prerelease" Decode.bool)
+        |: (Decode.field "html_url" Decode.string)
 
 
 githubRequest : String -> String -> String -> Decode.Decoder a -> Http.Request a

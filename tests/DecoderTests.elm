@@ -21,8 +21,8 @@ tests =
         , describe "decodeRelease"
             [ test "all fields present" <|
                 \() ->
-                    "{\"name\": \"foobar\", \"draft\": true, \"prerelease\": false}"
+                    "{\"name\": \"foobar\", \"draft\": true, \"prerelease\": false, \"html_url\": \"blah\"}"
                     |> decodeString decodeRelease
-                    |> Expect.equal (Ok (Release "foobar" True False))
+                    |> Expect.equal (Ok (Release "foobar" True False "blah"))
             ]
         ]

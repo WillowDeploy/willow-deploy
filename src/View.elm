@@ -1,7 +1,7 @@
 module View exposing (view)
 
 import Html exposing (Html, a, button, div, h2, h3, input, label, span, text)
-import Html.Attributes exposing (attribute, class, href)
+import Html.Attributes exposing (attribute, class, href, target)
 import Html.Events exposing (onClick, onInput)
 
 import Model exposing (..)
@@ -113,7 +113,7 @@ viewReleaseReleases releases =
 viewRelease : Release -> Html Msg
 viewRelease release =
     div [ class "release" ]
-        [ text release.name
+        [ a [ class "name", href release.url, target "_blank" ] [ text release.name ]
         ]
 
 viewLoginPage : Html Msg

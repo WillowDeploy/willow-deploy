@@ -3,13 +3,15 @@
 
 $page-width: 970px;
 
+$spacing: 10px;
+
 .navigation {
   height: 40px;
   background-color: #f8f8f8;
   border: 0 solid #e7e7e7;
   border-bottom-width: 1px;
   margin-bottom: 17px;
-  padding: 0 10px;
+  padding: 0 $spacing;
 
   .brand, .links {
     line-height: 30px;
@@ -35,6 +37,12 @@ $page-width: 970px;
   text-decoration: underline;
   cursor: pointer;
 }
+
+
+.heading, .sub-heading {
+  margin-bottom: $spacing;
+}
+
 
 .login-form {
   border: 1px solid #ddd;
@@ -88,10 +96,14 @@ $page-width: 970px;
   }
 }
 
-//.releases {
-//  display: flex;
-//  flex-direction: row;
-//  justify-content: space-around;
-//  align-items: flex-start;
-//}
+.release-board {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: flex-start;
+
+  .sub-heading {
+    text-align: center;
+  }
+}
 

@@ -2,7 +2,7 @@ module Layout exposing (..)
 
 import Json.Decode as Decode
 import Json.Decode.Extra exposing ((|:))
-import Html exposing (Html, a, button, div, h2, input, label, span, text)
+import Html exposing (Html, a, button, div, h2, h3, input, label, span, text)
 import Html.Attributes exposing (attribute, class, href)
 import Html.Events exposing (onClick, onInput)
 import Http
@@ -96,11 +96,11 @@ viewRepositoriesPage repositories =
     case repositories of
         Nothing ->
             div [ class "repositories-page" ]
-                [ h2 [] [ text "Repositories" ]
+                [ h2 [ class "heading" ] [ text "Repositories" ]
                 ]
         Just repositories ->
             div [ class "repositories-page" ]
-                [ h2 [] [ text "Repositories" ]
+                [ h2 [ class "heading" ] [ text "Repositories" ]
                 , repositories
                     |> List.map (\(repo) -> div [ class "repository", onClick (ChooseRepository repo)] [ text repo.fullName ])
                     |> div [ class "repositories" ]
@@ -116,34 +116,60 @@ viewRepositoryPage repository releases =
                 text ("Repository " ++ repo.fullName)
     in
         div [ class "repository-page" ]
-            [ h2 [] [ heading ]
-            , viewReleases releases
+            [ h2 [ class "heading" ] [ heading ]
+            , viewReleaseBoard releases
             ]
 
-viewReleases : Maybe Releases -> Html Msg
-viewReleases releases =
+viewReleaseBoard : Maybe Releases -> Html Msg
+viewReleaseBoard releases =
     case releases of
         Nothing ->
-            div [ class "releases" ] []
+            div [ class "release-board" ] []
         Just releases ->
-            releases
-                |> List.map viewRelease
-                |> div [ class "releases" ]
+            div [ class "release-board" ]
+                [ viewDraftReleases releases
+                , viewPreReleaseReleases releases
+                , viewReleaseReleases releases
+                ]
+
+viewDraftReleases : Releases -> Html Msg
+viewDraftReleases releases =
+    releases
+    |> List.filter isDraft
+    |> List.map viewRelease
+    |> List.append [ h3 [ class "sub-heading" ] [ text "Drafts" ] ]
+    |> div [ class "drafts" ]
+
+viewPreReleaseReleases : Releases -> Html Msg
+viewPreReleaseReleases releases =
+    releases
+    |> List.filter isPreRelease
+    |> List.map viewRelease
+    |> List.append [ h3 [ class "sub-heading" ] [ text "Pre-releases" ] ]
+    |> div [ class "pre-releases" ]
+
+viewReleaseReleases : Releases -> Html Msg
+viewReleaseReleases releases =
+    releases
+    |> List.filter isRelease
+    |> List.map viewRelease
+    |> List.append [ h3 [ class "sub-heading" ] [ text "Releases" ] ]
+    |> div [ class "releases" ]
 
 viewRelease : Release -> Html Msg
 viewRelease release =
-    let
-        label = if release.draft then
-                    "Draft"
-                else if release.prerelease then
-                    "Pre-release"
-                else
-                    "Release"
-    in
-        div [ class "release" ]
-            [ text (label ++ ": " ++ release.name)
-            ]
+    div [ class "release" ]
+        [ text release.name
+        ]
 
+isDraft : Release -> Bool
+isDraft release = release.draft
+
+isPreRelease : Release -> Bool
+isPreRelease release = not release.draft && release.prerelease
+
+isRelease : Release -> Bool
+isRelease release = not release.draft && not release.prerelease
 
 viewLoginPage : Html Msg
 viewLoginPage =

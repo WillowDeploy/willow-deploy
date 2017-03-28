@@ -9,7 +9,7 @@ import Test.Html.Query as Query
 import Test.Html.Selector exposing (text, tag, attribute, class)
 import Http exposing (get)
 
-import Layout exposing (Model, decodeRelease, decodeRepository, view, update)
+import Layout exposing (Model, decodeRelease, decodeRepository, isDraft, isPreRelease, isRelease, view, update)
 
 
 all : Test
@@ -95,5 +95,51 @@ all =
                     "{\"name\": \"foobar\", \"draft\": true, \"prerelease\": false}"
                     |> decodeString decodeRelease
                     |> Expect.equal (Ok (Layout.Release "foobar" True False))
+            ]
+        , describe "isDraft"
+            [ test "when 'draft' is True" <|
+                \() ->
+                    Layout.Release "" True False
+                    |> isDraft
+                    |> Expect.equal True
+            , test "when 'draft' is False" <|
+                \() ->
+                    Layout.Release "" False False
+                    |> isDraft
+                    |> Expect.equal False
+            ]
+        , describe "isPreRelease"
+            [ test "when 'draft' is True" <|
+                \() ->
+                    Layout.Release "" True False
+                    |> isPreRelease
+                    |> Expect.equal False
+            , test "when 'draft' is False and 'prerelease' is False" <|
+                \() ->
+                    Layout.Release "" False False
+                    |> isPreRelease
+                    |> Expect.equal False
+            , test "when 'draft' is False and 'prerelease' is True" <|
+                \() ->
+                    Layout.Release "" False True
+                    |> isPreRelease
+                    |> Expect.equal True
+            ]
+        , describe "isRelease"
+            [ test "when 'draft' is True" <|
+                \() ->
+                    Layout.Release "" True False
+                    |> isRelease
+                    |> Expect.equal False
+            , test "when 'draft' is False and 'prerelease' is True" <|
+                \() ->
+                    Layout.Release "" False True
+                    |> isRelease
+                    |> Expect.equal False
+            , test "when 'draft' is False and 'prerelease' is False" <|
+                \() ->
+                    Layout.Release "" False False
+                    |> isRelease
+                    |> Expect.equal True
             ]
         ]

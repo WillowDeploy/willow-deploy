@@ -13,6 +13,11 @@ $spacing: 10px;
   margin-bottom: 17px;
   padding: 0 $spacing;
 
+  .navigation-bar {
+    width: $page-width;
+    margin: 0 auto;
+  }
+
   .brand, .links {
     line-height: 30px;
   }

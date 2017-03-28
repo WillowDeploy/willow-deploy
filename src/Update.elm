@@ -4,6 +4,7 @@ import Json.Decode as Decode
 import Json.Decode.Extra exposing ((|:))
 import Http
 
+import Auth exposing (clearToken, storeToken)
 import Message exposing (..)
 import Model exposing (Model, User, Release, Releases, Repositories, Repository)
 
@@ -12,15 +13,17 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         AttemptLogin ->
-            ( model, fetchAuthenticatedUser model )
+            ( model, fetchAuthenticatedUser model.githubBaseUrl model.oauthToken )
         UpdateOAuthToken token ->
             ( { model | oauthToken = token }, Cmd.none )
         UpdateAuthenticatedUser (Err _) ->
             ( model, Cmd.none )
         UpdateAuthenticatedUser (Ok authenticatedUser) ->
-            ( { model | authenticatedUser = Just (User authenticatedUser) }, fetchRepositories model )
+            ( { model | authenticatedUser = Just (User authenticatedUser) }
+            , Cmd.batch [ fetchRepositories model, storeToken model.oauthToken ]
+            )
         Logout ->
-            ( { model | authenticatedUser = Nothing, oauthToken = "", repositories = Nothing }, Cmd.none )
+            ( { model | authenticatedUser = Nothing, oauthToken = "", repositories = Nothing }, clearToken () )
         UpdateRepositories (Ok repositories) ->
             ( { model | repositories = Just repositories }, Cmd.none )
         UpdateRepositories (Err _) ->
@@ -32,9 +35,9 @@ update msg model =
         UpdateReleases (Err _) ->
             ( model, Cmd.none )
 
-fetchAuthenticatedUser : Model -> Cmd Msg
-fetchAuthenticatedUser model =
-    githubRequest model.githubBaseUrl "/user" model.oauthToken decodeUsername
+fetchAuthenticatedUser : String -> String -> Cmd Msg
+fetchAuthenticatedUser githubBaseUrl oauthToken =
+    githubRequest githubBaseUrl "/user" oauthToken decodeUsername
         |> Http.send UpdateAuthenticatedUser
 
 decodeUsername : Decode.Decoder String

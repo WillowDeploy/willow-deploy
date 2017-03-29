@@ -1,7 +1,7 @@
 module Update exposing (..)
 
 import Json.Decode as Decode
-import Json.Decode.Extra exposing ((|:))
+import Json.Decode.Extra exposing ((|:), date)
 import Http
 
 import Auth exposing (clearToken, storeToken)
@@ -76,6 +76,8 @@ decodeRelease =
         |: (Decode.field "draft" Decode.bool)
         |: (Decode.field "prerelease" Decode.bool)
         |: (Decode.field "html_url" Decode.string)
+        |: (Decode.field "tag_name" Decode.string)
+        |: (Decode.field "created_at" date)
 
 
 githubRequest : String -> String -> String -> Decode.Decoder a -> Http.Request a

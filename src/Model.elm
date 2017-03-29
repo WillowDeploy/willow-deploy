@@ -1,5 +1,7 @@
 module Model exposing (..)
 
+import Date exposing (Date)
+
 
 type alias User =
     { username: String
@@ -18,6 +20,8 @@ type alias Release =
     , draft: Bool
     , prerelease: Bool
     , url: String
+    , tag: String
+    , createdOn: Date
     }
 
 type alias Releases = List Release

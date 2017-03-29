@@ -77,15 +77,27 @@ public class HappyPathTest extends SeleniumTest {
             .should().exist();
         find(".release").withText("Release v3")
             .should().exist();
+        find(".tag").withText("build-42313")
+            .should().exist();
+        find(".created-on").withText("2017-03-20T21:19:06Z")
+            .should().exist();
 
         find("h3").withText("Pre-releases")
             .should().exist();
         find(".release").withText("Release v2")
             .should().exist();
+        find(".tag").withText("build-12313")
+            .should().exist();
+        find(".created-on").withText("2017-03-20T21:03:42Z")
+            .should().exist();
 
         find("h3").withText("Releases")
             .should().exist();
         find(".release").withText("Release v1")
+            .should().exist();
+        find(".tag").withText("build-01213")
+            .should().exist();
+        find(".created-on").withText("2017-03-20T21:01:46Z")
             .should().exist();
 
 

@@ -1,6 +1,8 @@
 module View exposing (view)
 
-import Html exposing (Html, a, button, div, h2, h3, input, label, span, text)
+import Date exposing (Date)
+import Date.Extra exposing (toUtcFormattedString)
+import Html exposing (Html, a, button, div, dl, dd, h2, h3, input, label, span, text)
 import Html.Attributes exposing (attribute, class, href, target)
 import Html.Events exposing (onClick, onInput)
 
@@ -110,10 +112,17 @@ viewReleaseReleases releases =
     |> List.append [ h3 [ class "sub-heading" ] [ text "Releases" ] ]
     |> div [ class "releases" ]
 
+viewDate : Date -> String
+viewDate date = toUtcFormattedString "yyyy-MM-ddTHH:mm:ssX" date
+
 viewRelease : Release -> Html Msg
 viewRelease release =
     div [ class "release" ]
         [ a [ class "name", href release.url, target "_blank" ] [ text release.name ]
+        , dl [ class "details" ]
+            [ dd [ class "created-on" ] [ text <| viewDate release.createdOn ]
+            , dd [ class "tag" ] [ text release.tag ]
+            ]
         ]
 
 viewLoginPage : Html Msg

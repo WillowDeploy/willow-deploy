@@ -1,5 +1,7 @@
 module UpdateTests exposing (tests)
 
+import Date exposing (Date, Month(..))
+import Date.Extra exposing (fromParts)
 import Expect
 import Http
 import Test exposing (..)
@@ -7,6 +9,10 @@ import Test exposing (..)
 import Message exposing (..)
 import Model exposing (Model, Release, Repository, User)
 import Update exposing (update)
+
+
+someDate : Date
+someDate = fromParts 2017 Mar 29 11 15 0 0
 
 tests : Test
 tests =
@@ -67,9 +73,9 @@ tests =
         , describe "UpdateReleases"
             [ test "updates the releases on model" <|
                 \() ->
-                    update (UpdateReleases (Ok [ Release "v1" True True "url" ])) (Model "" Nothing "" Nothing Nothing Nothing)
+                    update (UpdateReleases (Ok [ Release "v1" True True "url" "tag" someDate])) (Model "" Nothing "" Nothing Nothing Nothing)
                     |> Tuple.first
-                    |> Expect.equal (Model "" Nothing "" Nothing Nothing (Just [ Release "v1" True True "url" ]))
+                    |> Expect.equal (Model "" Nothing "" Nothing Nothing (Just [ Release "v1" True True "url" "tag" someDate ]))
             , test "does not update releases on error" <|
                 \() ->
                     update (UpdateReleases (Err Http.Timeout)) (Model "" Nothing "" Nothing Nothing Nothing)

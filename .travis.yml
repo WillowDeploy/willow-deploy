@@ -22,6 +22,7 @@ install:
   - npm install -g elm
   - npm install -y
   - elm-package install -y
+  - cd tests && elm-package install -y && cd ..
 script: ./run-tests.sh
 after_success:
   - npm run-script build

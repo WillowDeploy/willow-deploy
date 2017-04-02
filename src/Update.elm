@@ -30,6 +30,8 @@ update msg model =
             ( model, Cmd.none )
         ChooseRepository repository ->
             ( { model | repository = Just repository }, fetchReleases model.githubBaseUrl model.oauthToken repository )
+        ClearChosenRepository ->
+            ( { model | repository = Nothing }, Cmd.none )
         UpdateReleases (Ok releases) ->
             ( { model | releases = Just releases }, Cmd.none )
         UpdateReleases (Err _) ->

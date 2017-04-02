@@ -67,12 +67,16 @@ viewRepositoryPage repository releases =
     let
         heading = case repository of
             Nothing ->
-                text "Repository"
+                [ a [ onClick ClearChosenRepository, href "#" ] [ text "Repositories" ]
+                ]
             Just repo ->
-                text ("Repository " ++ repo.fullName)
+                [ a [ onClick ClearChosenRepository, href "#" ] [ text "Repositories" ]
+                , text " / "
+                , text repo.fullName
+                ]
     in
         div [ class "repository-page" ]
-            [ h2 [ class "heading" ] [ heading ]
+            [ h2 [ class "heading" ] heading
             , viewReleaseBoard releases
             ]
 

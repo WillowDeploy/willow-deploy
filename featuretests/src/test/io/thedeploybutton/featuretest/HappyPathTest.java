@@ -70,7 +70,7 @@ public class HappyPathTest extends SeleniumTest {
             .click();
 
 
-        find("h2").withText("Repository noizwaves/repo-with-releases")
+        find("h2").withText("Repositories / noizwaves/repo-with-releases")
             .should().exist();
 
         find("h3").withText("Drafts")
@@ -98,6 +98,13 @@ public class HappyPathTest extends SeleniumTest {
         find(".tag").withText("build-01213")
             .should().exist();
         find(".created-on").withText("2017-03-20T21:01:46Z")
+            .should().exist();
+
+
+        find("a").withText("Repositories").click();
+
+
+        find("h2").withText("Repositories")
             .should().exist();
 
 

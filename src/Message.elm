@@ -11,5 +11,6 @@ type Msg
     | UpdateAuthenticatedUser (Result Http.Error String)
     | UpdateRepositories (Result Http.Error Repositories)
     | ChooseRepository Repository
+    | ClearChosenRepository
     | UpdateReleases (Result Http.Error Releases)
     | Logout

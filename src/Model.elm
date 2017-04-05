@@ -1,6 +1,7 @@
 module Model exposing (..)
 
 import Date exposing (Date)
+import RemoteData exposing (RemoteData, WebData)
 
 
 type alias User =
@@ -30,7 +31,7 @@ type alias Model =
     { githubBaseUrl: String
     , authenticatedUser: Maybe User
     , oauthToken: String
-    , repositories: Maybe Repositories
+    , repositories: WebData Repositories
     , repository: Maybe Repository
     , releases: Maybe Releases
     }

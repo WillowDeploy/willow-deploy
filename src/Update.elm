@@ -3,6 +3,7 @@ module Update exposing (..)
 import Json.Decode as Decode
 import Json.Decode.Extra exposing ((|:), date)
 import Http
+import RemoteData exposing (sendRequest, RemoteData(..))
 
 import Auth exposing (clearToken, storeToken)
 import Message exposing (..)
@@ -19,17 +20,16 @@ update msg model =
         UpdateAuthenticatedUser (Err _) ->
             ( model, Cmd.none )
         UpdateAuthenticatedUser (Ok authenticatedUser) ->
-            ( { model | authenticatedUser = Just (User authenticatedUser) }
+            ( { model | authenticatedUser = Just (User authenticatedUser), repositories = Loading }
             , Cmd.batch [ fetchRepositories model, storeToken model.oauthToken ]
             )
         Logout ->
-            ( { model | authenticatedUser = Nothing, oauthToken = "", repositories = Nothing }, clearToken () )
-        UpdateRepositories (Ok repositories) ->
-            ( { model | repositories = Just repositories }, Cmd.none )
-        UpdateRepositories (Err _) ->
-            ( model, Cmd.none )
+            ( { model | authenticatedUser = Nothing, oauthToken = "", repositories = NotAsked }, clearToken () )
+        UpdateRepositories response ->
+            ( { model | repositories = response }, Cmd.none )
         ChooseRepository repository ->
-            ( { model | repository = Just repository }, fetchReleases model.githubBaseUrl model.oauthToken repository )
+            ( { model | repository = Just repository }
+            , fetchReleases model.githubBaseUrl model.oauthToken repository )
         ClearChosenRepository ->
             ( { model | repository = Nothing }, Cmd.none )
         UpdateReleases (Ok releases) ->
@@ -49,7 +49,8 @@ decodeUsername =
 fetchRepositories : Model -> Cmd Msg
 fetchRepositories model =
     githubRequest model.githubBaseUrl "/user/repos?affiliation=owner&sort=pushed" model.oauthToken decodeRepositories
-        |> Http.send UpdateRepositories
+        |> RemoteData.sendRequest
+        |> Cmd.map UpdateRepositories
 
 decodeRepositories : Decode.Decoder Repositories
 decodeRepositories =

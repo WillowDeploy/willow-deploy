@@ -5,6 +5,7 @@ import Date.Extra exposing (toUtcFormattedString)
 import Html exposing (Html, a, button, div, dl, dd, h2, h3, input, label, span, text)
 import Html.Attributes exposing (attribute, class, href, target)
 import Html.Events exposing (onClick, onInput)
+import RemoteData exposing (RemoteData(..), WebData)
 
 import Model exposing (..)
 import Message exposing (..)
@@ -47,19 +48,24 @@ viewNavigation authenticatedUser =
                 ]
             ]
 
-viewRepositoriesPage : Maybe Repositories -> Html Msg
+viewRepositoriesPage : WebData Repositories -> Html Msg
 viewRepositoriesPage repositories =
     case repositories of
-        Nothing ->
+        Loading ->
             div [ class "repositories-page" ]
                 [ h2 [ class "heading" ] [ text "Repositories" ]
+                , text "Loading..."
                 ]
-        Just repositories ->
+        Success repositories ->
             div [ class "repositories-page" ]
                 [ h2 [ class "heading" ] [ text "Repositories" ]
                 , repositories
                     |> List.map (\(repo) -> div [ class "repository", onClick (ChooseRepository repo)] [ text repo.fullName ])
                     |> div [ class "repositories" ]
+                ]
+        _ ->
+            div [ class "repositories-page" ]
+                [ h2 [ class "heading" ] [ text "Repositories" ]
                 ]
 
 viewRepositoryPage : Maybe Repository -> Maybe Releases -> Html Msg

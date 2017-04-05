@@ -1,6 +1,7 @@
 module Main exposing (..)
 
 import Html exposing (programWithFlags)
+import RemoteData exposing (RemoteData(..))
 
 import Message exposing (Msg)
 import Model exposing (Model)
@@ -19,11 +20,12 @@ init : Flags -> ( Model, Cmd Msg )
 init flags =
     let
         githubBaseUrl = flags.githubBaseUrl
+
         (doNext, token) = case flags.token of
             Nothing -> (Cmd.none, "")
             Just token -> (fetchAuthenticatedUser githubBaseUrl token, token)
     in
-        ( Model flags.githubBaseUrl Nothing token Nothing Nothing Nothing, doNext )
+        ( Model flags.githubBaseUrl Nothing token NotAsked Nothing Nothing, doNext )
 
 
 main : Program Flags Model Msg

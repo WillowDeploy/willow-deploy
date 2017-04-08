@@ -68,7 +68,7 @@ viewRepositoriesPage repositories =
                 [ h2 [ class "heading" ] [ text "Repositories" ]
                 ]
 
-viewRepositoryPage : Maybe Repository -> Maybe Releases -> Html Msg
+viewRepositoryPage : Maybe Repository -> WebData Releases -> Html Msg
 viewRepositoryPage repository releases =
     let
         heading = case repository of
@@ -80,23 +80,24 @@ viewRepositoryPage repository releases =
                 , text " / "
                 , text repo.fullName
                 ]
+        content = case releases of
+            Loading ->
+                [ text "Loading... " ]
+            Success releases ->
+                [ viewReleaseBoard releases ]
+            _ ->
+                [ ]
     in
         div [ class "repository-page" ]
-            [ h2 [ class "heading" ] heading
-            , viewReleaseBoard releases
-            ]
+            (( h2 [ class "heading" ] heading ) :: content)
 
-viewReleaseBoard : Maybe Releases -> Html Msg
+viewReleaseBoard : Releases -> Html Msg
 viewReleaseBoard releases =
-    case releases of
-        Nothing ->
-            div [ class "release-board" ] []
-        Just releases ->
-            div [ class "release-board" ]
-                [ viewDraftReleases releases
-                , viewPreReleaseReleases releases
-                , viewReleaseReleases releases
-                ]
+    div [ class "release-board" ]
+        [ viewDraftReleases releases
+        , viewPreReleaseReleases releases
+        , viewReleaseReleases releases
+        ]
 
 viewDraftReleases : Releases -> Html Msg
 viewDraftReleases releases =

@@ -33,7 +33,7 @@ type alias Model =
     , oauthToken: String
     , repositories: WebData Repositories
     , repository: Maybe Repository
-    , releases: Maybe Releases
+    , releases: WebData Releases
     }
 
 

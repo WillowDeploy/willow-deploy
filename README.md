@@ -29,12 +29,12 @@ To get started developing, after cloning this repo run:
 
 1) Start a local development server.
    ```bash
-   yarn dev
+   yarn run dev
    ```
 1) Navigate to [http://localhost:3000/](http://localhost:3000/)
 
 # Testing
 
-Unit tests are written using [elm-test](http://package.elm-lang.org/packages/elm-community/elm-test) and [elm-html-test](http://package.elm-lang.org/packages/eeue56/elm-html-test). Run unit tests using the CLI test runner by invoking `yarn test`.
+Unit tests are written using [elm-test](http://package.elm-lang.org/packages/elm-community/elm-test) and [elm-html-test](http://package.elm-lang.org/packages/eeue56/elm-html-test). Run unit tests using the CLI test runner by invoking `yarn run test`.
 
-Feature tests are written using [simplelenium](https://github.com/dgageot/simplelenium). Run feature tests using Gradle by invoking `cd featuretests && ./gradlew test`.
+Feature tests are written using [simplelenium](https://github.com/dgageot/simplelenium). Run feature tests using `yarn run featuretest`.

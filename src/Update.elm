@@ -28,14 +28,12 @@ update msg model =
         UpdateRepositories response ->
             ( { model | repositories = response }, Cmd.none )
         ChooseRepository repository ->
-            ( { model | repository = Just repository }
+            ( { model | repository = Just repository, releases = Loading }
             , fetchReleases model.githubBaseUrl model.oauthToken repository )
         ClearChosenRepository ->
             ( { model | repository = Nothing }, Cmd.none )
-        UpdateReleases (Ok releases) ->
-            ( { model | releases = Just releases }, Cmd.none )
-        UpdateReleases (Err _) ->
-            ( model, Cmd.none )
+        UpdateReleases releases ->
+            ( { model | releases = releases }, Cmd.none )
 
 fetchAuthenticatedUser : String -> String -> Cmd Msg
 fetchAuthenticatedUser githubBaseUrl oauthToken =
@@ -66,7 +64,8 @@ decodeRepository =
 fetchReleases : String -> String -> Repository -> Cmd Msg
 fetchReleases githubBaseUrl oauthToken repo =
     githubRequest githubBaseUrl ("/repos/" ++ repo.ownerLogin ++ "/" ++ repo.name ++ "/releases") oauthToken decodeReleases
-        |> Http.send UpdateReleases
+        |> RemoteData.sendRequest
+        |> Cmd.map UpdateReleases
 
 decodeReleases : Decode.Decoder Releases
 decodeReleases =

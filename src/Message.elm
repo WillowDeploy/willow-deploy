@@ -13,5 +13,5 @@ type Msg
     | UpdateRepositories (WebData Repositories)
     | ChooseRepository Repository
     | ClearChosenRepository
-    | UpdateReleases (Result Http.Error Releases)
+    | UpdateReleases (WebData Releases)
     | Logout

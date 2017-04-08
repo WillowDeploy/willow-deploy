@@ -25,7 +25,7 @@ init flags =
             Nothing -> (Cmd.none, "")
             Just token -> (fetchAuthenticatedUser githubBaseUrl token, token)
     in
-        ( Model flags.githubBaseUrl Nothing token NotAsked Nothing Nothing, doNext )
+        ( Model flags.githubBaseUrl Nothing token NotAsked Nothing NotAsked, doNext )
 
 
 main : Program Flags Model Msg

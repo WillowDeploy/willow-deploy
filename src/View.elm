@@ -3,7 +3,7 @@ module View exposing (view)
 import Date exposing (Date)
 import Date.Extra exposing (toUtcFormattedString)
 import Html exposing (Html, a, button, div, dl, dd, h2, h3, input, label, span, text)
-import Html.Attributes exposing (attribute, class, href, target)
+import Html.Attributes exposing (attribute, class, disabled, href, target)
 import Html.Events exposing (onClick, onInput)
 import RemoteData exposing (RemoteData(..), WebData)
 
@@ -15,31 +15,31 @@ view : Model -> Html Msg
 view model =
     let
         page = case model.authenticatedUser of
-            Nothing ->
-                viewLoginPage
-            Just _ ->
+            Success user ->
                 case model.repository of
                     Nothing ->
                         viewRepositoriesPage model.repositories
                     Just _ ->
                         viewRepositoryPage model.repository model.releases
+            _ ->
+                viewLoginPage model.authenticatedUser
     in
         div []
             [ viewNavigation model.authenticatedUser
             , page
             ]
 
-viewNavigation : Maybe User -> Html Msg
+viewNavigation : WebData User -> Html Msg
 viewNavigation authenticatedUser =
     let
         links = case authenticatedUser of
-            Nothing ->
-                text ""
-            Just user ->
+            Success user ->
                 div [ class "links" ]
                     [ span [ class "current-username" ] [ text user.username ]
                     , a [ class "logout-link", href "#", onClick Logout ] [ text "logout" ]
                     ]
+            _ ->
+                text ""
     in
         div [ class "navigation" ]
             [ div [ class "navigation-bar" ]
@@ -136,15 +136,19 @@ viewRelease release =
             ]
         ]
 
-viewLoginPage : Html Msg
-viewLoginPage =
-    div [ class "login-page" ]
-        [ div [ class "login-form" ]
-            [ label [] [ text "Personal Access Token" ]
-            , input [ attribute "placeholder" "Token", onInput UpdateOAuthToken ] []
-            , div [ class "buttons" ]
-                [ button [ onClick AttemptLogin ] [ text "Login" ]
+viewLoginPage : WebData User -> Html Msg
+viewLoginPage user =
+    let
+        (loading, buttonText) = case user of
+            Loading -> (True, "Authenticating...")
+            _ -> (False, "Login")
+    in
+        div [ class "login-page" ]
+            [ div [ class "login-form" ]
+                [ label [] [ text "Personal Access Token" ]
+                , input [ attribute "placeholder" "Token", onInput UpdateOAuthToken ] []
+                , div [ class "buttons" ]
+                    [ button [ onClick AttemptLogin, disabled loading ] [ text buttonText ]
+                    ]
                 ]
             ]
-        ]
-

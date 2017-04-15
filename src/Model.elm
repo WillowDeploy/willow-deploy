@@ -29,7 +29,7 @@ type alias Releases = List Release
 
 type alias Model =
     { githubBaseUrl: String
-    , authenticatedUser: Maybe User
+    , authenticatedUser: WebData User
     , oauthToken: String
     , repositories: WebData Repositories
     , repository: Maybe Repository

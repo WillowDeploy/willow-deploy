@@ -21,11 +21,11 @@ init flags =
     let
         githubBaseUrl = flags.githubBaseUrl
 
-        (doNext, token) = case flags.token of
-            Nothing -> (Cmd.none, "")
-            Just token -> (fetchAuthenticatedUser githubBaseUrl token, token)
+        ( doNext, user, token ) = case flags.token of
+            Nothing -> ( Cmd.none, NotAsked, "" )
+            Just token -> ( fetchAuthenticatedUser githubBaseUrl token, Loading, token )
     in
-        ( Model flags.githubBaseUrl Nothing token NotAsked Nothing NotAsked, doNext )
+        ( Model flags.githubBaseUrl user token NotAsked Nothing NotAsked, doNext )
 
 
 main : Program Flags Model Msg

@@ -19,63 +19,63 @@ tests : Test
 tests =
     describe "update"
         [ describe "AttemptLogin"
-            [ test "does not change the model" <|
+            [ test "marks user as loading" <|
                 \() ->
-                    update AttemptLogin (Model "" Nothing "" NotAsked Nothing NotAsked)
+                    update AttemptLogin (Model "" NotAsked "" NotAsked Nothing NotAsked)
                     |> Tuple.first
-                    |> Expect.equal (Model "" Nothing "" NotAsked Nothing NotAsked)
+                    |> Expect.equal (Model "" Loading "" NotAsked Nothing NotAsked)
 
             ]
         , describe "UpdateAuthenticatedUser"
             [ test "does not change the model on error" <|
                 \() ->
-                    update (UpdateAuthenticatedUser (Err Http.Timeout)) (Model "" Nothing "" NotAsked Nothing NotAsked)
+                    update (UpdateAuthenticatedUser (Failure Http.Timeout)) (Model "" Loading "" NotAsked Nothing NotAsked)
                     |> Tuple.first
-                    |> Expect.equal (Model "" Nothing "" NotAsked Nothing NotAsked)
+                    |> Expect.equal (Model "" (Failure Http.Timeout) "" NotAsked Nothing NotAsked)
             , test "changes the model on success" <|
                 \() ->
-                    update (UpdateAuthenticatedUser (Ok "foobar")) (Model "" Nothing "sometoken" NotAsked Nothing NotAsked)
+                    update (UpdateAuthenticatedUser (Success (User "foobar"))) (Model "" NotAsked "sometoken" NotAsked Nothing NotAsked)
                     |> Tuple.first
-                    |> Expect.equal (Model "" (Just (User "foobar")) "sometoken" Loading Nothing NotAsked)
+                    |> Expect.equal (Model "" (Success (User "foobar")) "sometoken" Loading Nothing NotAsked)
             ]
         , describe "UpdateOAuthToken"
             [ test "updates username and resets token" <|
                 \() ->
-                    update (UpdateOAuthToken "baz") (Model "" Nothing "" NotAsked Nothing NotAsked)
+                    update (UpdateOAuthToken "baz") (Model "" NotAsked "" NotAsked Nothing NotAsked)
                     |> Tuple.first
-                    |> Expect.equal (Model "" Nothing "baz" NotAsked Nothing NotAsked)
+                    |> Expect.equal (Model "" NotAsked "baz" NotAsked Nothing NotAsked)
             ]
         , describe "Logout"
             [ test "resets the model" <|
                 \() ->
-                    update Logout (Model "" (Just (User "")) "some token" (Success []) Nothing NotAsked)
+                    update Logout (Model "" (Success (User "")) "some token" (Success []) Nothing NotAsked)
                     |> Tuple.first
-                    |> Expect.equal (Model "" Nothing "" NotAsked Nothing NotAsked)
+                    |> Expect.equal (Model "" NotAsked "" NotAsked Nothing NotAsked)
             ]
         , describe "UpdateRepositories"
             [ test "updates repositories on model" <|
                 \() ->
-                    update (UpdateRepositories (Success [])) (Model "" Nothing "" Loading Nothing NotAsked)
+                    update (UpdateRepositories (Success [])) (Model "" NotAsked "" Loading Nothing NotAsked)
                     |> Tuple.first
-                    |> Expect.equal (Model "" Nothing "" (Success []) Nothing NotAsked)
+                    |> Expect.equal (Model "" NotAsked "" (Success []) Nothing NotAsked)
             ]
         , describe "ChooseRepository"
             [ test "updates the current repository" <|
                 \() ->
-                    update (ChooseRepository <| Repository "fo/o" "fo" "o") (Model "" Nothing "" NotAsked Nothing NotAsked)
+                    update (ChooseRepository <| Repository "fo/o" "fo" "o") (Model "" NotAsked "" NotAsked Nothing NotAsked)
                     |> Tuple.first
-                    |> Expect.equal (Model "" Nothing "" NotAsked (Just <| Repository "fo/o" "fo" "o") Loading)
+                    |> Expect.equal (Model "" NotAsked "" NotAsked (Just <| Repository "fo/o" "fo" "o") Loading)
             ]
         , describe "UpdateReleases"
             [ test "updates model on success" <|
                 \() ->
-                    update (UpdateReleases (Success [ Release "v1" True True "url" "tag" someDate])) (Model "" Nothing "" NotAsked Nothing NotAsked)
+                    update (UpdateReleases (Success [ Release "v1" True True "url" "tag" someDate])) (Model "" NotAsked "" NotAsked Nothing NotAsked)
                     |> Tuple.first
-                    |> Expect.equal (Model "" Nothing "" NotAsked Nothing (Success [ Release "v1" True True "url" "tag" someDate ]))
+                    |> Expect.equal (Model "" NotAsked "" NotAsked Nothing (Success [ Release "v1" True True "url" "tag" someDate ]))
             , test "update model on error" <|
                 \() ->
-                    update (UpdateReleases (Failure Http.Timeout)) (Model "" Nothing "" NotAsked Nothing NotAsked)
+                    update (UpdateReleases (Failure Http.Timeout)) (Model "" NotAsked "" NotAsked Nothing NotAsked)
                     |> Tuple.first
-                    |> Expect.equal (Model "" Nothing "" NotAsked Nothing (Failure Http.Timeout))
+                    |> Expect.equal (Model "" NotAsked "" NotAsked Nothing (Failure Http.Timeout))
             ]
         ]

@@ -14,17 +14,17 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         AttemptLogin ->
-            ( model, fetchAuthenticatedUser model.githubBaseUrl model.oauthToken )
+            ( { model | authenticatedUser = Loading }, fetchAuthenticatedUser model.githubBaseUrl model.oauthToken )
         UpdateOAuthToken token ->
             ( { model | oauthToken = token }, Cmd.none )
-        UpdateAuthenticatedUser (Err _) ->
-            ( model, Cmd.none )
-        UpdateAuthenticatedUser (Ok authenticatedUser) ->
-            ( { model | authenticatedUser = Just (User authenticatedUser), repositories = Loading }
+        UpdateAuthenticatedUser (Success authenticatedUser) ->
+            ( { model | authenticatedUser = Success authenticatedUser, repositories = Loading }
             , Cmd.batch [ fetchRepositories model, storeToken model.oauthToken ]
             )
+        UpdateAuthenticatedUser response ->
+            ( { model | authenticatedUser = response }, Cmd.none )
         Logout ->
-            ( { model | authenticatedUser = Nothing, oauthToken = "", repositories = NotAsked }, clearToken () )
+            ( { model | authenticatedUser = NotAsked, oauthToken = "", repositories = NotAsked }, clearToken () )
         UpdateRepositories response ->
             ( { model | repositories = response }, Cmd.none )
         ChooseRepository repository ->
@@ -38,11 +38,13 @@ update msg model =
 fetchAuthenticatedUser : String -> String -> Cmd Msg
 fetchAuthenticatedUser githubBaseUrl oauthToken =
     githubRequest githubBaseUrl "/user" oauthToken decodeUsername
-        |> Http.send UpdateAuthenticatedUser
+        |> RemoteData.sendRequest
+        |> Cmd.map UpdateAuthenticatedUser
 
-decodeUsername : Decode.Decoder String
+decodeUsername : Decode.Decoder User
 decodeUsername =
-    Decode.at ["login"] Decode.string
+    Decode.succeed User
+        |: (Decode.field "login" Decode.string)
 
 fetchRepositories : Model -> Cmd Msg
 fetchRepositories model =

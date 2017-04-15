@@ -3,13 +3,13 @@ module Message exposing (..)
 import Http
 import RemoteData exposing (WebData)
 
-import Model exposing (Releases, Repositories, Repository)
+import Model exposing (Releases, Repositories, Repository, User)
 
 
 type Msg
     = AttemptLogin
     | UpdateOAuthToken String
-    | UpdateAuthenticatedUser (Result Http.Error String)
+    | UpdateAuthenticatedUser (WebData User)
     | UpdateRepositories (WebData Repositories)
     | ChooseRepository Repository
     | ClearChosenRepository

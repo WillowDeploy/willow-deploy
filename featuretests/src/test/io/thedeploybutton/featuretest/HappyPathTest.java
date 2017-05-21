@@ -81,6 +81,8 @@ public class HappyPathTest extends SeleniumTest {
             .should().exist();
         find(".created-on").withText("2017-03-20T21:19:06Z")
             .should().exist();
+        find(".promote-draft").withText("Promote as Pre-release")
+            .should().exist();
 
         find("h3").withText("Pre-releases")
             .should().exist();

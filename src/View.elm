@@ -103,7 +103,7 @@ viewDraftReleases : Releases -> Html Msg
 viewDraftReleases releases =
     releases
     |> List.filter isDraft
-    |> List.map viewRelease
+    |> List.map viewDraftRelease
     |> List.append [ h3 [ class "sub-heading" ] [ text "Drafts" ] ]
     |> div [ class "drafts" ]
 
@@ -111,7 +111,7 @@ viewPreReleaseReleases : Releases -> Html Msg
 viewPreReleaseReleases releases =
     releases
     |> List.filter isPreRelease
-    |> List.map viewRelease
+    |> List.map viewActionlessRelease
     |> List.append [ h3 [ class "sub-heading" ] [ text "Pre-releases" ] ]
     |> div [ class "pre-releases" ]
 
@@ -119,22 +119,37 @@ viewReleaseReleases : Releases -> Html Msg
 viewReleaseReleases releases =
     releases
     |> List.filter isRelease
-    |> List.map viewRelease
+    |> List.map viewActionlessRelease
     |> List.append [ h3 [ class "sub-heading" ] [ text "Releases" ] ]
     |> div [ class "releases" ]
 
 viewDate : Date -> String
 viewDate date = toUtcFormattedString "yyyy-MM-ddTHH:mm:ssX" date
 
-viewRelease : Release -> Html Msg
-viewRelease release =
+viewRelease : List (Html Msg) -> Release -> Html Msg
+viewRelease actions release =
     div [ class "release" ]
-        [ a [ class "name", href release.url, target "_blank" ] [ text release.name ]
+        ([ a [ class "name", href release.url, target "_blank" ] [ text release.name ]
         , dl [ class "details" ]
             [ dd [ class "created-on" ] [ text <| viewDate release.createdOn ]
             , dd [ class "tag" ] [ text release.tag ]
             ]
-        ]
+        ] ++ actions)
+
+viewDraftRelease : Release -> Html Msg
+viewDraftRelease release =
+    let
+        actions =
+            [ div [ class "actions" ]
+                  [ button [ class "promote-draft" ]
+                      [ text "Promote as Pre-release" ]
+                  ]
+            ]
+    in
+        viewRelease actions release
+
+viewActionlessRelease : Release -> Html Msg
+viewActionlessRelease release = viewRelease [ ] release
 
 viewLoginPage : WebData User -> Html Msg
 viewLoginPage user =
